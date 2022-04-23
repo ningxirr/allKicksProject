@@ -6,6 +6,7 @@ import Home from '../views/home.vue'
 import Signin from '../views/signin.vue'
 import Signup from '../views/signup.vue'
 import Product from '../views/product.vue'
+import Aboutus from '../views/aboutus.vue'
 
 
 //const routerHistory = createWebHistory()
@@ -30,17 +31,19 @@ const routes = [
         component: Explore
       },
       {
-        path: '/product',
+        path: '/product/:productId',
         name: 'Product',
         component: Product
       },
       {
+        path: '/aboutus',
+        name: 'Aboutus',
+        component: Aboutus
+      },
+      {
         path: '/cart',
         name: 'Cart',
-        component: Cart,
-        meta: {
-            requiresAuth: true
-        }
+        component: Cart
       },
       {
           path: '/signin',
@@ -52,6 +55,10 @@ const routes = [
         name: 'Signup',
         component: Signup
       }
+      ,
+        /* meta: {
+            requiresAuth: true
+        } */
 ]
 
 const router = createRouter({
