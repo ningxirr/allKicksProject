@@ -12,8 +12,9 @@
         </div>
     </div>
 </template>
-import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth'
+
 <script>
+import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth'
 export default {
     name: 'SignUp',
     data () {

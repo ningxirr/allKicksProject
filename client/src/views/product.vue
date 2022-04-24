@@ -1,4 +1,39 @@
 <template>
+<div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <a class="navbar-brand" href="/"><img src="/src/assets/allKicks.png" alt="Image" height="35" width="100"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/explore">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/aboutus">About us</a>
+          </li>
+        </ul>
+
+        <form class="d-flex">
+          <a class="nav-link" href="/cart"><i class="bi bi-bag-check-fill" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a>
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="search">
+          <a class="nav-link" href="/signin"><i class="bi bi-person-circle" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a>
+        <select class="form-select">
+            <i class="bi bi-person-circle" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i>
+            <option value="1">Welcome! {{username}} </option>
+        </select>
+        </form>
+      </div>
+    </div>
+  </nav>
+
     <div class="container pt-5">
         <div class="row">
             <div class="col-4">
@@ -7,26 +42,16 @@
                 <br>
                 <h4><b>${{Product.price}}</b></h4>
                 <br>
-                <!-- <div class="dropdown">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Select size
-                </a>
-
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">6 UK</a>
-                    <a class="dropdown-item" href="#">6.5 UK</a>
-                    <a class="dropdown-item" href="#">7 UK</a>
-                    <a class="dropdown-item" href="#">7.5 UK</a>
-                    <a class="dropdown-item" href="#">8 UK</a>
-                </div>
-            </div> -->
-                <sui-dropdown selection placeholder="Select size" v-model="selected1"
+                <div class="row">
+                    <br>
+                    <sui-dropdown clearable selection placeholder="Select size" v-model="selected1"
                     :options="['6 UK', '6.5 UK', '7 UK', '7.5 UK', '8 UK', '8.5 UK']" />
-                <br><br>
-                <router-link :to="{ path: 'signin', name: 'Signin'} " style="text-decoration : none;">
-                    <button type="button" class="btn btn-dark"> Add to cart </button>
-                </router-link>
+                    <br><br>
+                </div>
+                <br>
+                <!-- <router-link :to="{ path: 'signin', name: 'Signin'} " style="text-decoration : none;"> -->
+                    <button type="button" class="btn btn-dark" @click="AddToCart"> Add to cart </button>
+                <!-- </router-link> -->
             </div>
 
             <div class="col-8">
@@ -34,12 +59,8 @@
                     <img v-bind:src="`../src/assets/imgproducts/${Product.img}/${Product.img}-middle.png`" alt="...">
                 </div>
                 <div class="row">
-                    <div class="col-6"><img
-                            v-bind:src="`../src/assets/imgproducts/${Product.img}/${Product.img}-left.png`"
-                            class="card-img-top" alt="..."></div>
-                    <div class="col-6"><img
-                            v-bind:src="`../src/assets/imgproducts/${Product.img}/${Product.img}-right.png`"
-                            class="card-img-top" alt="..."></div>
+                    <div class="col-6"><img v-bind:src="`../src/assets/imgproducts/${Product.img}/${Product.img}-left.png`" class="card-img-top" alt="..."></div>
+                    <div class="col-6"><img v-bind:src="`../src/assets/imgproducts/${Product.img}/${Product.img}-right.png`" class="card-img-top" alt="..."></div>
                 </div>
             </div>
         </div>
@@ -64,18 +85,21 @@
         </div>
       </div>
     </div>
-
+</div>
 
     </div>
 </template>
 
 <script>
     import axios from 'axios'
+    import { getAuth } from "firebase/auth";
     let localhost = "http://localhost:5001/products/"
     export default {
         name: 'Products',
         data() {
             return {
+                selected1:'',
+                username: '',
                 Product: {
                     name: '',
                     description1: '',
@@ -94,9 +118,21 @@
                 .catch((error) => {
                     console.log(error)
                 })
+            var auth = getAuth();
+            var user = auth.currentUser;
+            if (user !== null) {
+                this.username = user.email.split('@')[0];
+            }
         },
         methods: {
-
+            AddToCart(){
+                if(this.username!=null){
+                    // this.$router.replace('/cart')
+                    
+                }else{
+                    this.$router.replace('/signin')
+                }
+            }
         }
     }
 </script>

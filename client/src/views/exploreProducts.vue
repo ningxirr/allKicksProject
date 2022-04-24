@@ -25,6 +25,9 @@
           <a class="nav-link" href="/cart"><i class="bi bi-bag-check-fill" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a>
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="search">
           <a class="nav-link" href="/signin"><i class="bi bi-person-circle" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a>
+          
+          
+
         </form>
       </div>
     </div>
@@ -47,7 +50,7 @@
             <div>{{ product_alias.description1 }}</div>
             <div>{{ product_alias.description2 }}</div>
           </div>
-          <h5><b>${{ product_alias.price }}</b></h5>
+          <h5><b>${{ product_alias.price }} {{this.username}}</b></h5>
           <br>
           </div>
           </router-link>
@@ -61,15 +64,16 @@
 
 <script>
   import axios from 'axios'
+
   let localhost = "http://localhost:5001/products/"
   export default {
     name: 'Products',
     props: {},
     data() {
       return {
+        username: '',
         search: '',
-        Products: [],
-        // _id: ''
+        Products: []
       }
     },
     mounted() {
