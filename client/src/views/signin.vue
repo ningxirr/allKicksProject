@@ -58,11 +58,8 @@ export default {
                 // The signed-in user info.
                 //const user = result.user;
                 this.$router.replace('/cart')
-
             }).catch((error) => {
-
                 alert(error.message)
-
             });
       }
   },
@@ -70,5 +67,4 @@ export default {
 </script>
 
 <style>
-
 </style>

@@ -26,7 +26,6 @@ export default {
     },
     methods: {
         signUp () {
-
             const auth = getAuth()
             createUserWithEmailAndPassword(
             auth,
@@ -45,5 +44,4 @@ export default {
 </script>
 
 <style>
-
 </style>
