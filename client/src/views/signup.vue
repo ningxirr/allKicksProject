@@ -18,15 +18,16 @@ export default {
     name: 'SignUp',
     data () {
         return {
-        formData: {
-            email: '',
-            password: ''
-        }
+            formData: {
+                email: '',
+                password: ''
+            }
+            // ,
+            // currentUser=False
         }
     },
     methods: {
         signUp () {
-
             const auth = getAuth()
             createUserWithEmailAndPassword(
             auth,

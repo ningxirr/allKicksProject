@@ -44,6 +44,10 @@ const routes = [
         path: '/cart',
         name: 'Cart',
         component: Cart
+        ,
+        meta: {
+          requiresAuth: true
+        }
       },
       {
           path: '/signin',
@@ -55,8 +59,8 @@ const routes = [
         name: 'Signup',
         component: Signup
       }
-      ,
-        /* meta: {
+      /*,
+         meta: {
             requiresAuth: true
         } */
 ]
@@ -67,7 +71,7 @@ const router = createRouter({
 })
 
 
-router.beforeEach((to, from, next) => {
+/* router.beforeEach((to, from, next) => {
     const currentUser = getAuth().currentUser
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
     if (requiresAuth && !currentUser) {
@@ -80,5 +84,5 @@ router.beforeEach((to, from, next) => {
       next()
     }
   })
-
+ */
 export default router

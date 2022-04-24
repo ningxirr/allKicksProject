@@ -24,7 +24,9 @@
                 <sui-dropdown selection placeholder="Select size" v-model="selected1"
                     :options="['6 UK', '6.5 UK', '7 UK', '7.5 UK', '8 UK', '8.5 UK']" />
                 <br><br>
-                <button type="button" class="btn btn-dark"> Add to cart </button>
+                <router-link :to="{ path: 'signin', name: 'Signin'} " style="text-decoration : none;">
+                    <button type="button" class="btn btn-dark"> Add to cart </button>
+                </router-link>
             </div>
 
             <div class="col-8">

@@ -1,8 +1,40 @@
 <template>
+  <div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <a class="navbar-brand" href="/"><img src="src/assets/allKicks.png" alt="Image" height="35" width="100"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/explore">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/aboutus">About us</a>
+          </li>
+
+        </ul>
+        <form class="d-flex">
+          <a class="nav-link" href="/cart"><i class="bi bi-bag-check-fill" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a>
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="search">
+          <a class="nav-link" href="/signin"><i class="bi bi-person-circle" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a>
+        </form>
+      </div>
+    </div>
+  </nav>
+
 
   <div class="container">
+    
 
-    <img src="../assets/homeexplore.jpeg" class="img-fluid" alt="Image" >
+    <!-- <img src="../assets/homeexplore.jpeg" class="img-fluid" alt="Image" > -->
     <br>
     <div class="container col-9">
       <div class="row row-cols-1 row-cols-md-3 g-4" >
@@ -23,6 +55,8 @@
       </div>
     </div>
   </div>
+
+    </div>
 </template>
 
 <script>
@@ -47,9 +81,6 @@
         .catch((error) => {
           console.log(error)
         })
-    },
-    methods: {
-
     },
     computed: {
       filterProducts: function () {
