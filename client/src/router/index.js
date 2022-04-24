@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { getAuth } from 'firebase/auth'
+// import firebase from 'firebase'
 import Cart from '../views/cart.vue'
 import Explore from '../views/exploreProducts.vue'
 import Home from '../views/home.vue'
+import HomeP from '../views/homepage.vue'
 import Signin from '../views/signin.vue'
 import Signup from '../views/signup.vue'
 import Product from '../views/product.vue'
@@ -26,6 +28,11 @@ const routes = [
         component: Home,
       },
       {
+        path: '/homep',
+        name: 'HomeP',
+        component: HomeP,
+      },
+      {
         path: '/explore',
         name: 'Explore',
         component: Explore
@@ -44,6 +51,10 @@ const routes = [
         path: '/cart',
         name: 'Cart',
         component: Cart
+        ,
+        meta: {
+          requiresAuth: true
+        }
       },
       {
           path: '/signin',
@@ -55,8 +66,8 @@ const routes = [
         name: 'Signup',
         component: Signup
       }
-      ,
-        /* meta: {
+      /*,
+         meta: {
             requiresAuth: true
         } */
 ]
@@ -67,7 +78,7 @@ const router = createRouter({
 })
 
 
-router.beforeEach((to, from, next) => {
+/* router.beforeEach((to, from, next) => {
     const currentUser = getAuth().currentUser
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
     if (requiresAuth && !currentUser) {
@@ -79,6 +90,6 @@ router.beforeEach((to, from, next) => {
     } else {
       next()
     }
-  })
+  }) */
 
 export default router

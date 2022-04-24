@@ -5,6 +5,7 @@ port = process.env.PORT || 5001
 
 mongoose = require('mongoose')
 Product = require('./api/models/productsModel')
+Contact = require('./api/models/contactListModel')
 
 bodyParser = require('body-parser')
 
@@ -21,7 +22,10 @@ app.use(bodyParser.urlencoded({ extended: true}))
 app.use(bodyParser.json())
 
 var routes = require('./api/routes/productsRoutes')
+var routescontact = require('./api/routes/contactListRoutes')
+
 routes(app)
+routescontact(app)
 
 app.listen(port)
 console.log('Product List API started on : http://localhost:'+ port)

@@ -38,4 +38,3 @@ onAuthStateChanged(auth, (user)=>{
         app = createApp(App).use(router).use(FomanticUI).mount('#app')
     }
 })
-
