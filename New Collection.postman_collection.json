@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "854812ef-33bd-4c7c-8002-6456f79063c7",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get all contacts",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/contacts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"contacts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get showAContact",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/contacts/626530ca7e6f99eeda3ec481",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"contacts",
+						"626530ca7e6f99eeda3ec481"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get orderShowById",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/orders/626530ca7e6f99eeda3ec481",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"orders",
+						"626530ca7e6f99eeda3ec481"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get listAllProducts",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post contacts products",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"_id\": \"6264652dcac9d0d0b06740db\",\r\n        \"name\": \"Off-White\",\r\n        \"description1\": \"LOW VULCANIZED\",\r\n        \"description2\": \"CANVAS/UEDE BEIGE BEIGE\",\r\n        \"price\": \"430\",\r\n        \"img\": \"Off-White-LOW-VULCANIZED\",\r\n        \"image\": \"2022-04-24T19:25:44.103Z\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/contacts/626530ca7e6f99eeda3ec481/6264652dcac9d0d0b06740db",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"contacts",
+						"626530ca7e6f99eeda3ec481",
+						"6264652dcac9d0d0b06740db"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get readAproduct",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/products/6264652dcac9d0d0b06740db",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"products",
+						"6264652dcac9d0d0b06740db"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get addContactHistory",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productId\": \"6264652dcac9d0d0b06740db\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/contacts/626530ca7e6f99eeda3ec481",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"contacts",
+						"626530ca7e6f99eeda3ec481"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get customerOrder",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productId\": \"6264652dcac9d0d0b06740db\",\r\n    \"qty\": 2,\r\n    \"size\": \"6.5\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/orders/626530ca7e6f99eeda3ec481/6264652dcac9d0d0b06740db/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"orders",
+						"626530ca7e6f99eeda3ec481",
+						"6264652dcac9d0d0b06740db",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get adminSignIn",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productId\": \"6264652dcac9d0d0b06740db\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/admin/admin@admin.com/123456",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"admin",
+						"admin@admin.com",
+						"123456"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get showOrderById",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/orders/626530ca7e6f99eeda3ec481",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"orders",
+						"626530ca7e6f99eeda3ec481"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

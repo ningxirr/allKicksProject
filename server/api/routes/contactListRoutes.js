@@ -9,8 +9,10 @@ module.exports = function(app){
     app.route('/contacts/:contactId')
         .get(contactList.showOneContact)
         .post(contactList.addContactHistory)
-        // .post(contactList.editAContact)
         /*.delete(contactList.deleteAContact) */
+        
+    app.route('/contacts/edit/:contactEmail')
+        .post(contactList.editAContact)
 
     app.route('/contacts/email/:contactEmail')
             .get(contactList.showOneContactByEmail)

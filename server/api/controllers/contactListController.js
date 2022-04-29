@@ -30,9 +30,9 @@ exports.showOneContact = function(req, res){
 
 exports.showOneContactByEmail = function(req, res){
     console.log(req.params.contactId)
-    Contact.findOne({custId: req.params.contactEmail}, function(err, contact){
+    Contact.findOne({email: req.params.contactEmail}, function(err, contact){
         if(err) throw err
-        console.log("contact"+contact)
+        console.log(`showOneContactByEmail ${contact}`)
         res.json(contact)
     })
 }
@@ -40,8 +40,10 @@ exports.showOneContactByEmail = function(req, res){
 exports.editAContact = function(req, res){
     var contactUser = {}
     contactUser = req.body
-    Contact.findOneAndUpdate(req.params.contactEmail, contactUser, {new: true}, function(err, contact){
+    // console.log(`editbefore ${req.params.contactEmail}`)
+    Contact.findOneAndUpdate({email: req.params.contactEmail}, contactUser, {new: true}, function(err, contact){
         if(err) throw err
+        console.log(`edit ${contact}`)
         res.json(contact)
     })
 }

@@ -44,6 +44,26 @@ var ContactSchema = new Schema({
         productId:{
             type: String
         },
+        name: {
+            type: String,
+            Required: 'Please enter'
+        },
+        description1: {
+            type: String,
+            Required: 'Please enter'
+        },
+        description2: {
+            type: String,
+            Required: 'Please enter'
+        },
+        price: {
+            type: Number,
+            Required: 'Please enter'
+        },
+        img:{
+            type: String,
+            Required: 'Please enter'
+        },
         createdDate:{
             type: Date,
             default :Date.now //default ไม่ต้อง required

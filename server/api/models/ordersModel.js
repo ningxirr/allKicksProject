@@ -12,6 +12,26 @@ var OrdersSchema = new Schema({
             type: String,
             Required: 'Please enter'
         },
+        name: {
+            type: String,
+            Required: 'Please enter'
+        },
+        description1: {
+            type: String,
+            Required: 'Please enter'
+        },
+        description2: {
+            type: String,
+            Required: 'Please enter'
+        },
+        price: {
+            type: Number,
+            Required: 'Please enter'
+        },
+        img:{
+            type: String,
+            Required: 'Please enter'
+        },
         qty:{
             type: Number,
             Required: 'Please enter'

@@ -8,6 +8,7 @@ import 'fomantic-ui-css/semantic.min.css'
 
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+// import * as firebase from "firebase";
 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'

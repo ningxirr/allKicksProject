@@ -54,9 +54,10 @@
                 <p> Product {{this.Product}} </p>
                 <p> orderContact {{this.orderContactProduct}} </p> -->
                 <br>
-                <!-- <router-link :to="{ path: 'signin', name: 'Signin'} " style="text-decoration : none;"> -->
+                <!-- <router-link :to="{ path: 'cart', name: 'Cart'} " style="text-decoration : none;"> -->
+                <router-link to="/cart">  
                     <button type="button" class="btn btn-dark" @click="AddToCart"> Add to cart </button>
-                <!-- </router-link> -->
+                </router-link>
             </div>
 
             <div class="col-8">
@@ -145,6 +146,7 @@
                 .catch((error) => {
                     console.log(error)
                 })
+            
             //get customer id
             var auth = getAuth();
             var user = auth.currentUser;
@@ -163,7 +165,14 @@
 
             //add history of customer
             setTimeout(()=>{
-                var productId = {productId: this.Product._id}
+                var productId = {
+                    productId: this.Product._id,
+                    name: this.Product.name,
+                    description1: this.Product.description1,
+                    description2: this.Product.description2,
+                    price: this.Product.price,
+                    img: this.Product.img
+                }
                 axios.post(localhostcontact+this.cId, productId)
                 .then((response)=>{
                     console.log("add to history")
@@ -178,8 +187,13 @@
                 if(this.username!=null){
                     var orderinfo = {
                         productId: this.Product._id,
-                        qty: this.p_qty,
-                        size: this.size
+                        name: this.Product.name,
+                        description1: this.Product.description1,
+                        description2: this.Product.description2,
+                        price: this.Product.price,
+                        img: this.Product.img,
+                        qty: this.Product.p_qty,
+                        size: this.Product.size
                     }
                     axios.post(localhostorders+this.cId, orderinfo)
                     .then((response)=>{

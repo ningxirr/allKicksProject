@@ -57,6 +57,8 @@
 
 <script>
 import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth'
+import axios from 'axios'
+let localhostcontacts = "http://localhost:5001/contacts/"
 export default {
     name: 'SignUp',
     data () {
@@ -73,16 +75,26 @@ export default {
         signUp () {
             const auth = getAuth()
             createUserWithEmailAndPassword(
-            auth,
-            this.formData.email,
-            this.formData.password
+              auth,
+              this.formData.email,
+              this.formData.password
             )
             .then(user => {
-            this.$router.replace('/cart')
+              // console.log(this.formData.email)
+              axios.post(localhostcontacts, {email: this.formData.email})
+              .then((response)=>{
+
+                console.log(response)
+              })
+              .catch((error)=>{
+                  console.log(error)
+              })
+              this.$router.replace('/cart')
             })
             .catch(e => {
             alert('oops' + e.message)
             })
+            
         }
     },
 }

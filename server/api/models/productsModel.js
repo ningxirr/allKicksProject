@@ -7,7 +7,11 @@ var ProductsSchema = new Schema({
         type: String,
         Required: 'Please enter'
     },
-    description: {
+    description1: {
+        type: String,
+        Required: 'Please enter'
+    },
+    description2: {
         type: String,
         Required: 'Please enter'
     },
@@ -15,7 +19,7 @@ var ProductsSchema = new Schema({
         type: Number,
         Required: 'Please enter'
     },
-    image:{
+    img:{
         type: String,
         Required: 'Please enter'
     }
