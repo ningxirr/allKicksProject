@@ -37,7 +37,8 @@
     <div class="container pt-5">
         <div class="row">
             <div class="col-4">
-                {{Product._id}}
+                <!-- {{Product._id}} -->
+                <!-- {{Contact.history[0]}} -->
                 <h3><b>{{Product.name}}</b></h3>
                 <div>{{Product.description1}}</div>
                 <br>
@@ -74,25 +75,41 @@
 
     <h4><b>Suggestion</b></h4>
     <div class="container col-9">
-      <div class="row row-cols-1 row-cols-md-3 g-4" >
-        <div class="col" v-for="product_alias in filterProducts" v-bind:key="product_alias._id" style="text-align : center;">
-          <router-link :to="{ path: 'product', name: 'Product', params:{productId: product_alias._id} } " style="text-decoration : none;">
-          <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
-            <img v-bind:src="`./src/assets/imgproducts/${product_alias.img}/${product_alias.img}-middle.png`" class="card-img-top" alt="...">
+        <div class="col" v-for = "(aRecent, key) in Contact.history" :key='key' style="text-align : center;">
+          <!-- <router-link :to="{ path: 'product', name: 'Product', params:{productId: product_alias._id} } " style="text-decoration : none;"> -->
+          <div class="card text-dark bg-light mb-3 h-100 " style="width: 20rem;">
+            <img v-bind:src="`../src/assets/imgproducts/${aRecent.img}/${aRecent.img}-middle.png`" class="card-img-top" alt="...">
           <div class="card-body">
-            <h5 class="card-title"><strong>{{ product_alias.name }}</strong></h5>
-            <div>{{ product_alias.description1 }}</div>
-            <div>{{ product_alias.description2 }}</div>
+            <h5 class="card-title"><strong>{{ aRecent.name }}</strong></h5>
+            <div>{{ aRecent.description1 }}</div>
+            <div>{{ aRecent.description2 }}</div>
           </div>
-          <h5><b>${{ product_alias.price }}</b></h5>
+          <h5><b>${{ aRecent.price }}</b></h5>
           <br>
           </div>
+          <!-- </router-link> -->
+        </div>
+    
+    <!-- 
+      <div class="row row-cols-1 row-cols-md-3 g-4" >
+        <div class="col" v-for = "(aRecent, key) in Contact.history" :key='key' style="text-align : center;">
+          <router-link :to="{ path: 'product', name: 'Product', params:{productId: product_alias._id} } " style="text-decoration : none;">
+            <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
+                <img v-bind:src="`./src/assets/imgproducts/${aRecent.img}/${aRecent.img}-middle.png`" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title"><strong>{{ aRecent.name }}</strong></h5>
+                <div>{{ aRecent.description1 }}</div>
+                <div>{{ aRecent.description2 }}</div>
+            </div>
+            <h5><b>${{ aRecent.price }}</b></h5>
+            <br>
+            </div>
           </router-link>
         </div>
-      </div>
-    </div>
+      </div> 
+    </div> -->
 </div>
-
+<br><br><br>
     </div>
 </template>
 
@@ -110,21 +127,8 @@
                 size:'',
                 username: '',
                 cId: '',
+                Contact: {},
                 p_qty: 1,
-                /* ,
-                Contact : {
-                    email: '',
-                    firstName: '',
-                    lastName: '',
-                    company: '',
-                    address: '',
-                    appartment: '',
-                    city: '',
-                    country: '',
-                    postal: '',
-                    phone: ''
-                },
-                orderContactProduct: {} */
                 Product: {
                     _id: '',
                     name: '',
@@ -156,8 +160,10 @@
             }
             axios.get(localhostcontact+'email/'+this.emailregist)
             .then((response)=>{
+                this.Contact = response.data
                 this.cId = response.data._id
-                console.log(this.cId)
+                // this.cHistory = response.data.history
+                // alert(this.Contact.history)
             })
             .catch((error)=>{
                 console.log(error)
@@ -166,7 +172,7 @@
             //add history of customer
             setTimeout(()=>{
                 var productId = {
-                    productId: this.Product._id,
+                    _id: this.Product._id,
                     name: this.Product.name,
                     description1: this.Product.description1,
                     description2: this.Product.description2,
@@ -176,6 +182,7 @@
                 axios.post(localhostcontact+this.cId, productId)
                 .then((response)=>{
                     console.log("add to history")
+                    alert("history")
                 })
                 .catch((error)=>{
                     console.log(error)

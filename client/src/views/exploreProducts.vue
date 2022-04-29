@@ -105,8 +105,8 @@
 
       axios.get(localhost)
         .then((reponse) => {
-          console.log(reponse.data)
           this.Products = reponse.data
+          console.log()
         })
         .catch((error) => {
           console.log(error)
@@ -136,7 +136,7 @@
     computed: {
       filterProducts: function () {
         return this.Products.filter((product) => {
-          return product.name.match(this.search) || product.description.match(this.search)
+          return product.name.match(this.search) || product.description1.match(this.search) || product.description2.match(this.search)
         })
       }
     }
@@ -144,21 +144,21 @@
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap');
-a{
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins',sans-serif;
-  font-weight: bold;
-}
-.centered {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  color: #fff;
-  font-size: 4em;
-  font-family: 'Poppins',sans-serif;
-  font-weight: bold;
-  transform: translate(-50%, -50%);
-}
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap');
+  a{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins',sans-serif;
+    font-weight: bold;
+  }
+  .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: #fff;
+    font-size: 4em;
+    font-family: 'Poppins',sans-serif;
+    font-weight: bold;
+    transform: translate(-50%, -50%);
+  }
 </style>

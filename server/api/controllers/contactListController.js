@@ -51,19 +51,47 @@ exports.editAContact = function(req, res){
 exports.addContactHistory = function(req, res){
     console.log("addContactHistory")
     console.log(`cid = ${req.params.contactId}`)
-    var contactHistory = req.body
-    var contactData = {}
+    var newProductData = req.body
 
     Contact.findById(req.params.contactId, function(err, contact){
         console.log("can find")
         if(err) throw err
-        contactData = contact
-        contactData.history.push(contactHistory)
+        var oldCustData = contact
+        console.log(oldCustData.history)
+        console.log(newProductData)
 
-        Contact.findByIdAndUpdate(req.params.contactId, contactData, {new: true}, function(err, contactData){
+        /* if(contact.history.length<=3){
+            contactData.history.push(contactHistory)
+        }else{
+            contactData.history.shift()
+        } */
+        var oldHistroryProduct = oldCustData.history.filter(product => product._id == newProductData._id)
+        if (oldHistroryProduct.length == 0){
+            console.log("new")
+            oldCustData.history.push(newProductData)
+        }
+        if(oldHistroryProduct.length==4){
+            oldCustData.history.shift()
+        }
+        /* var oldCustProduct = oldCustData.order.filter(order => order.productId === newCustomerOrder.productId)
+        console.log(newCustomerOrder.productId)
+        console.log(oldCustProduct)
+        if (oldCustProduct.length == 0){
+            console.log("new")
+            oldCustData.order.push(newCustomerOrder)
+        }*/
+        
+        setTimeout(()=> {
+            Contact.findByIdAndUpdate(req.params.contactId, oldCustData, {new: true}, function(err, contactData){
             if(err) throw err
             res.json(contactData)
         }) 
+        },1000) 
+
+        /* Contact.findByIdAndUpdate(req.params.contactId, contactData, {new: true}, function(err, contactData){
+            if(err) throw err
+            res.json(contactData)
+        }) */
     })
 }
 
