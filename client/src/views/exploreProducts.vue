@@ -4,6 +4,7 @@
     <div class="container-fluid">
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <a class="navbar-brand" href="/"><img src="src/assets/allKicks.png" alt="Image" height="35" width="100"></a>
+      
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -11,10 +12,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
+            <a class="nav-link " aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/explore">Shop</a>
+            <a class="nav-link active" href="/explore">Shop</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/aboutus">About us</a>
@@ -34,17 +35,17 @@
   </nav>
 
 
-  <div class="container">
-    
+  <div>
+      <img src="../assets/homeexplore.jpeg" class="img-fluid" alt="Image" >
+      <div class="centered" style="text-align: center">Find your favorite shoes</div>
 
-    <!-- <img src="../assets/homeexplore.jpeg" class="img-fluid" alt="Image" > -->
-    <br>
-    <div class="container col-9">
+    <br><br><br>
+    <div class="container col-9" style="text-align : center;">
       <div class="row row-cols-1 row-cols-md-3 g-4" >
-        <div class="col" v-for="product_alias in filterProducts" v-bind:key="product_alias._id" style="text-align : center;">
+        <div class="col" v-for="product_alias in filterProducts" v-bind:key="product_alias._id" >
           <router-link :to="{ path: 'product', name: 'Product', params:{productId: product_alias._id} } " style="text-decoration : none;">
-          <div class="card text-dark bg-light mb-3 h-100 " style="max-width: 18rem;">
-            <img v-bind:src="`./src/assets/imgproducts/${product_alias.img}/${product_alias.img}-middle.png`" class="card-img-top" alt="...">
+          <div class="card text-dark bg-light mb-3 h-100 " style="width: 20rem;">
+            <img v-bind:src="`./src/assets/imgproducts/${product_alias.img}/${product_alias.img}-middle.png`" class="card-img-top" alt="..." height="160" width="40">
           <div class="card-body">
             <h5 class="card-title"><strong>{{ product_alias.name }}</strong></h5>
             <div>{{ product_alias.description1 }}</div>
@@ -57,8 +58,16 @@
         </div>
       </div>
     </div>
+    <br><br><br>
+    <div style="text-align: center">
+        <router-link to="/cart">
+          <button type="button" class="btn btn-outline-dark">
+            <a>Find more</a>
+          </button>
+        </router-link>
+      </div>
   </div>
-
+  <br><br><br>
     </div>
 </template>
 
@@ -97,4 +106,21 @@
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap');
+a{
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins',sans-serif;
+  font-weight: bold;
+}
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #fff;
+  font-size: 4em;
+  font-family: 'Poppins',sans-serif;
+  font-weight: bold;
+  transform: translate(-50%, -50%);
+}
 </style>

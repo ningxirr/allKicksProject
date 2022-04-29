@@ -12,13 +12,13 @@ var ProductsSchema = new Schema({
         Required: 'Please enter'
     },
     price: {
-        type: String,
+        type: Number,
         Required: 'Please enter'
     },
     image:{
-        type: Date,
-        default :Date.now //default ไม่ต้อง required
-    },
+        type: String,
+        Required: 'Please enter'
+    }
 })
 
 module.exports = mongoose.model('products', ProductsSchema) 

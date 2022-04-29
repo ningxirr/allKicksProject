@@ -37,6 +37,7 @@
     <div class="container pt-5">
         <div class="row">
             <div class="col-4">
+                {{Product._id}}
                 <h3><b>{{Product.name}}</b></h3>
                 <div>{{Product.description1}}</div>
                 <br>
@@ -44,10 +45,14 @@
                 <br>
                 <div class="row">
                     <br>
-                    <sui-dropdown clearable selection placeholder="Select size" v-model="selected1"
+                    <sui-dropdown clearable selection placeholder="Select size" v-model="size"
                     :options="['6 UK', '6.5 UK', '7 UK', '7.5 UK', '8 UK', '8.5 UK']" />
+                    <input placeholder="qty" v-model="p_qty">
                     <br><br>
                 </div>
+                <!-- <p> Contact {{this.Contact}} </p>
+                <p> Product {{this.Product}} </p>
+                <p> orderContact {{this.orderContactProduct}} </p> -->
                 <br>
                 <!-- <router-link :to="{ path: 'signin', name: 'Signin'} " style="text-decoration : none;"> -->
                     <button type="button" class="btn btn-dark" @click="AddToCart"> Add to cart </button>
@@ -93,24 +98,46 @@
 <script>
     import axios from 'axios'
     import { getAuth } from "firebase/auth";
-    let localhost = "http://localhost:5001/products/"
+    let localhostproduct = "http://localhost:5001/products/"
+    let localhostcontact = "http://localhost:5001/contacts/"
+    let localhostorders = "http://localhost:5001/orders/"
     export default {
         name: 'Products',
         data() {
             return {
-                selected1:'',
+                emailregist: '',
+                size:'',
                 username: '',
+                cId: '',
+                p_qty: 1,
+                /* ,
+                Contact : {
+                    email: '',
+                    firstName: '',
+                    lastName: '',
+                    company: '',
+                    address: '',
+                    appartment: '',
+                    city: '',
+                    country: '',
+                    postal: '',
+                    phone: ''
+                },
+                orderContactProduct: {} */
                 Product: {
+                    _id: '',
                     name: '',
                     description1: '',
                     description2: '',
-                    price: '',
-                    img: '',
+                    price: 0,
+                    img: ''
                 }
+                
             }
         },
         mounted() {
-            axios.get(localhost + this.$route.params.productId)
+            //get product info.
+            axios.get(localhostproduct + this.$route.params.productId)
                 .then((response) => {
                     this.Product = response.data
                     console.log(this.Product)
@@ -118,17 +145,50 @@
                 .catch((error) => {
                     console.log(error)
                 })
+            //get customer id
             var auth = getAuth();
             var user = auth.currentUser;
             if (user !== null) {
+                this.emailregist = user.email
                 this.username = user.email.split('@')[0];
             }
+            axios.get(localhostcontact+'email/'+this.emailregist)
+            .then((response)=>{
+                this.cId = response.data._id
+                console.log(this.cId)
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+
+            //add history of customer
+            setTimeout(()=>{
+                var productId = {productId: this.Product._id}
+                axios.post(localhostcontact+this.cId, productId)
+                .then((response)=>{
+                    console.log("add to history")
+                })
+                .catch((error)=>{
+                    console.log(error)
+                })
+            },1000)
         },
         methods: {
             AddToCart(){
                 if(this.username!=null){
+                    var orderinfo = {
+                        productId: this.Product._id,
+                        qty: this.p_qty,
+                        size: this.size
+                    }
+                    axios.post(localhostorders+this.cId, orderinfo)
+                    .then((response)=>{
+                        console.log(response)
+                    })
+                    .catch((error)=>{
+                        console.log(error)
+                    })
                     // this.$router.replace('/cart')
-                    
                 }else{
                     this.$router.replace('/signin')
                 }

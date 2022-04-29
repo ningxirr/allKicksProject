@@ -32,9 +32,10 @@
 
     <div class="container col-10 pt-5">
         <h1><b>Checkout </b></h1>
+        {{this.Order}}
         <div class="row pt-5">
-            <div class="col-7">
-                <div class="mb-3" style="border-right: 1px solid  rgb(176, 175, 175);">
+            <div class="col-7" style="border-right: 1px solid  rgb(176, 175, 175); margin-right: 30px;">
+                <div class="mb-3">
                     <label class="form-label">Contact Infomation <span class="text-danger">*</span></label>
                     <input type="email" class="form-control" id="exampleFormControlInput1"  v-model="this.emailregist" disabled>
                     <br>
@@ -61,13 +62,42 @@
                     </div><br>
                     <input type="email" class="form-control" placeholder="Phone (optional)" v-model="Contact.phone"><br>
                 </div>
-                <br><br>
+                <br>
                 <button type="button" class="btn btn-dark" @click="AddShipping" >Done</button>
+                <br><br>
             </div>
+            <!-- {{this.Contact}} -->
+<!--             <div class="col">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <div class="row">
+                                <div class="col-4">
+                                    <img v-bind:src="`/src/assets/imgproducts/${Contact.order.img}/${Contact.order.img}-middle.png`" class="card-img-top" alt="...">
+                                </div>
+                                <div class="col">
+                                    <h5><b>{{this.Contact.order.name}}</b></h5>
+                                    <p>{{this.Contact.order.description1}} {{this.Contact.order.description2}}</p>
+                                    <h5><b>${{this.Contact.order.price}}</b> </h5>
+                                </div>
+                            </div>
+                            <hr>
+                        </tr>
+                        <tr>
+                            <div>
+                                <p style="float: left;">Subtotal</p><p style="float:right;">$ {{subtotal}}</p>
+                            </div>
+                            
+                            <p>Shipping </p>
+                            <hr>
+                        </tr>
+                        <tr>
+                            <p>Total </p>
+                        </tr>
+                    </tbody>
 
-            <div class="col-4">
-
-            </div>
+                </table>
+            </div> -->
         </div>
     </div>
 </div>
@@ -76,13 +106,15 @@
 <script>
 import { getAuth } from "firebase/auth";
 import axios from 'axios'
-let localhost = "http://localhost:5001/contacts/"
+let localhostcontact = "http://localhost:5001/contacts/"
+let localhostorder = "http://localhost:5001/order/"
     export default {
         name: 'Cart',
         data() {
             return {
                 emailregist: '',
                 Contact : {
+                    _id: '',
                     email: '',
                     firstName: '',
                     lastName: '',
@@ -93,6 +125,10 @@ let localhost = "http://localhost:5001/contacts/"
                     country: '',
                     postal: '',
                     phone: ''
+                },
+                Order: {
+                    customerId: '',
+                    order: []
                 }
             }
         },
@@ -103,7 +139,8 @@ let localhost = "http://localhost:5001/contacts/"
                 this.emailregist = user.email;
                 console.log(this.emailregist)
             }
-            axios.get(localhost+this.emailregist)
+            //get customer info
+            axios.get(localhostcontact+'email/'+this.emailregist)
             .then((response)=>{
                 this.Contact = response.data
                 console.log(this.Contact)
@@ -111,9 +148,19 @@ let localhost = "http://localhost:5001/contacts/"
             .catch((error)=>{
                 console.log(error)
             })
+
+            //get customer order
+            axios.get(localhostorder+this.Contact._id)
+            .then((response)=>{
+                this.Order = response.data
+                console.log(`order = ${this.Order}`)
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
         },
         methods: {
-            AddShipping(){
+            /* AddShipping(){
                 let newContact = {
                     email: this.Contact.email,
                     firstName: this.Contact.firstName,
@@ -156,8 +203,15 @@ let localhost = "http://localhost:5001/contacts/"
                 else{
                     alert("Field cannot be left blank")
                 } 
-            }
-        },
+            },
+            subtotal(){
+                var total
+                // console.log(this.Contact.order.size())
+                for(var i=0; i<this.Contact.order.size(); i++){
+
+                }
+            } */
+        }
     }
 </script>
 

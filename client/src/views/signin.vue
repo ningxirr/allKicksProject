@@ -42,7 +42,7 @@
             <h5><b>Password</b></h5>
             <input type="password" v-model="formData.password" class="form-control" placeholder="password">
             <br>
-            <p>Need an account? <router-link :to="{ path: 'signup', name: 'Signup'} ">signup here</router-link></p>
+            <p>Need an account? <router-link :to="{ path: 'signup', name: 'Signup'} " style="text-decoration : none; color: navy">signup here</router-link></p>
             <button class="btn btn-success btn-block full-width" @click="signIn">Signin</button>
             
           </form>
