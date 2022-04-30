@@ -70,52 +70,58 @@
                     </div><br>
                     <input type="email" class="form-control" placeholder="Phone (optional)" v-model="Contact.phone"><br>
                 </div>
-                <br>
                 <button type="button" class="btn btn-dark" @click="LoadAddress" >Load Address</button>&nbsp;&nbsp;
                 <br><br>
             </div>
             
-            <div class="col" id="contentPrint">
+            <div class="col">
                 <table class="table">
-
                     <tbody>
-                        
-                        <tr v-for = "(aProduct, key) in Order.order" :key='key'> 
-                            
-                            <div class="row">
+                        <tr v-for = "(aProduct, key) in Order.order" :key='key' > 
+                            <div class="row" style="border-bottom: 1pt solid #C0C0C0; margin:10px;">
                                 <div class="col-4">
                                     <img v-bind:src="`/src/assets/imgproducts/${aProduct.img}/${aProduct.img}-middle.png`" class="card-img-top" alt="...">
                                 </div>
                                 <div class="col">
                                     <h5><b>{{aProduct.name}}</b></h5>
                                     <p>{{aProduct.description1}} {{aProduct.description2}}</p>
+                                    <div class="input-group input-group-sm">
+                                       <!--  <div class="input-group input-group-sm"> -->
+                                            <span class="input-group-text" id="basic-addon1" style="background-color:black; color:white;">SIZE</span>
+                                            <span class="input-group-text" id="basic-addon1" style="background-color:white;">{{aProduct.size}}</span>
+                                        <!-- </div> -->
+                                        <!-- <div class="input-group input-group-sm" style="margin-top:10px;"> -->
+                                            <span class="input-group-text" id="basic-addon1" style="background-color:black; color:white; margin-left:10px;">QTY</span>
+                                            <input type="number" min="0" max="100" style="text-align:right; width:50px;" v-model="aProduct.qty">
+                                            <div class="input-group-append input-group-sm">
+                                                <button class="btn btn-outline-secondary" @click="editQty(aProduct.productId, aProduct.size, aProduct.qty)" type="button" style="background-color:light-grey;">
+                                                    <i class="bi bi-check" style="color:green;"></i>
+                                                </button>
+                                            </div>
+                                        <!-- </div> -->
+                                    </div><br>
                                     <h5><b>${{aProduct.price}}</b> </h5>
                                 </div>
-                            </div>
-                            <hr>
+                            </div >
                         </tr>
 
                         <tr>
-                            <div>
-                                <p style="float: left;">Subtotal</p><p style="float:right;">$ {{this.subtotal}}</p>
-                            </div>
-                            <div>
-                                <p style="float: left;">Shipping</p><p style="float:right;">$ {{this.shipping}}</p>
-                            </div>
-                            <hr>
+                            <p style="float: left;">Subtotal</p><p style="float:right;">$ {{this.subtotal}}</p>
+                        </tr>
+                        <tr style="border-bottom: 1pt solid #C0C0C0;">
+                            <p style="float: left;">Shipping</p><p style="float:right;">$ {{this.shipping}}</p>
                         </tr>
                         <tr>
-                            <div>
-                                <p style="float: left;">Shipping</p><h3 style="float:right;"><b>$ {{this.total}}</b></h3>
+                            <div style="margin-top:10px">
+                                <p style="float: left;">Total</p><h3 style="float:right;"><b>$ {{this.total}}</b></h3>
                             </div>
                         </tr>
+                        <div style="text-align:center;">
+                            <button type="button" class="btn btn-dark" style="background-color:black" @click="AddShipping">Done</button> &nbsp;
+                            <button type="button" class="btn btn-dark" style="background-color:black" @click="ReceiptPDF">Receipt</button>
+                        </div>
                     </tbody>
 
-                    <tfoot style="text-align:center;">
-                        <br>
-                        <button type="button" class="btn btn-dark changebutton" @click="AddShipping" >Done</button> &nbsp;
-                        <button type="button" class="btn btn-dark changebutton" @click="ReceiptPDF" >Receipt</button>
-                    </tfoot>
                 </table>
             </div>
         </div>
@@ -131,6 +137,7 @@ import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 let localhostcontact = "http://localhost:5001/contacts/"
 let localhostorder = "http://localhost:5001/orders/"
+let localhostupdateorder = "http://localhost:5001/updateorders/"
     export default {
         name: 'Cart',
         data() {
@@ -179,7 +186,7 @@ let localhostorder = "http://localhost:5001/orders/"
                         console.log(`order = ${this.Order}`)
                         for(var i=0; i<this.Order.order.length; i++){
                             console.log(this.Order.order.price)
-                            this.subtotal += parseInt(this.Order.order[i].price)
+                            this.subtotal += parseInt(this.Order.order[i].price*this.Order.order[i].qty)
                         }
                         this.total = this.subtotal+this.shipping
                     })
@@ -266,8 +273,22 @@ let localhostorder = "http://localhost:5001/orders/"
                     alert("Field cannot be left blank")
                 } 
             },
+            editQty(id, shoesize, q){
+                let Orders = {
+                    productId: id,
+                    size: shoesize,
+                    qty: q
+                }
+                axios.post(localhostupdateorder+this.Contact._id, Orders)
+                .then((response)=>{
+                    console.log(response)
+                    location.reload();
+                }).catch((error)=>{
+                    console.log(error)
+                })  
+            },
             ReceiptPDF(){
-                var receipt = [this.Order.order.length-1][5]
+                /* var receipt = [this.Order.order.length-1][5]
                 // receipt[0].push(this.Order.order.name)
                 console.log(this.Order.order[1].name)
                 for(var i=0; i<this.Order.order.length; i++){
@@ -277,17 +298,17 @@ let localhostorder = "http://localhost:5001/orders/"
                     receipt[i][3].push(this.Order.order[i].price)
                     receipt[i][4].push(this.Order.order[i].qty)
                 }
-                console.log(receipt)
-                /* var doc = new jsPDF()
+                console.log(receipt) */
+                var doc = new jsPDF()
                 autoTable(doc, {
                     head: [['Brand', 'Descriprion', 'Size', 'Price', 'Qty']],
                     margin: {top:50},
-
-                    body: [
+                    // body: 
+                    /* body: [
                         ["OffWhite", "nnnnn", "6.5 UK", "$430"]
-                    ]
+                    ] */
                 })
-                doc.save('try.pdf') */
+                doc.save('try.pdf')
                 
 
 

@@ -11,7 +11,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" href="/">Home</a>
+            <a class="nav-link" href="/">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/explore">Shop</a>
@@ -23,8 +23,15 @@
         </ul>
         <form class="d-flex">
           <a class="nav-link" href="/cart"><i class="bi bi-bag-check-fill" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a>
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="search">
-          <a class="nav-link" href="/signin"><i class="bi bi-person-circle" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a>
+          <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="bi bi-person-circle" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-lg-end" style="text-align:right">
+            <li>Welcome {{this.username}} !&nbsp;</li>
+            <li v-if="username"><a class="dropdown-item" @click="logOut()">Signout</a></li>
+            <li v-else><a class="dropdown-item" @click="logIn()">Signin</a></li>
+          </ul>
         </form>
       </div>
     </div>
@@ -69,6 +76,22 @@ export default {
     }
   },
   methods: {
+      logIn(){
+        this.$router.replace('/signin')
+      },
+      logOut(){
+          const currentUser = getAuth().currentUser
+          const auth = getAuth()
+          if (currentUser&&auth){
+            signOut(auth)
+            .then(()=>{
+              this.$router.replace('/signin')
+            })
+            .catch((error)=>{
+              alert(error.message)
+            })
+          }
+      },
       signIn () {
             const auth = getAuth()
             signInWithEmailAndPassword(auth, this.formData.email, this.formData.password)

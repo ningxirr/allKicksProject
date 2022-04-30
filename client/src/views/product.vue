@@ -11,7 +11,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" href="/">Home</a>
+            <a class="nav-link " href="/">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="/explore">Shop</a>
@@ -23,7 +23,6 @@
 
         <form class="d-flex">
           <a class="nav-link" href="/cart"><i class="bi bi-bag-check-fill" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a>
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="search">
           <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
             <i class="bi bi-person-circle" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i>
@@ -38,11 +37,10 @@
     </div>
   </nav>
 
-    <div class="container pt-5">
+     <div class="container pt-5">
         <div class="row">
             <div class="col-4">
-                <!-- {{Product._id}} -->
-                <!-- {{Contact.history[0]}} -->
+                {{Product._id}}
                 <h3><b>{{Product.name}}</b></h3>
                 <div>{{Product.description1}}</div>
                 <br>
@@ -50,9 +48,25 @@
                 <br>
                 <div class="row">
                     <br>
-                    <sui-dropdown clearable selection placeholder="Select size" v-model="size"
-                    :options="['6 UK', '6.5 UK', '7 UK', '7.5 UK', '8 UK', '8.5 UK']" />
-                    <input placeholder="qty" v-model="p_qty">
+                    <div class="btn-group">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-dark dropdown-toggle " type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Select size ({{Product.size}} UK)
+                            </button>
+                            <ul class="dropdown-menu text-center" aria-labelledby="dropdownMenu2">
+                                <li><a class="dropdown-item" @click="Product.size=6" >6 UK</a></li>
+                                <li><a class="dropdown-item" @click="Product.size=6.5" >6.5 UK</a></li>
+                                <li><a class="dropdown-item" @click="Product.size=7.5" >7.5 UK</a></li>
+                                <li><a class="dropdown-item" @click="Product.size=8" >8 UK</a></li>
+                                <li><a class="dropdown-item" @click="Product.size=8.5" >8.5 UK</a></li>
+                                <li><a class="dropdown-item" @click="Product.size=9" >9 UK</a></li>
+                                <li><a class="dropdown-item" @click="Product.size=9.5" >9.5 UK</a></li>
+                                <li><a class="dropdown-item" @click="Product.size=10" >10 UK</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- <sui-dropdown clearable selection placeholder="Select size" v-model="size" :options="['6 UK', '6.5 UK', '7 UK', '7.5 UK', '8 UK', '8.5 UK']" /> -->
                     <br><br>
                 </div>
                 <!-- <p> Contact {{this.Contact}} </p>
@@ -60,9 +74,9 @@
                 <p> orderContact {{this.orderContactProduct}} </p> -->
                 <br>
                 <!-- <router-link :to="{ path: 'cart', name: 'Cart'} " style="text-decoration : none;"> -->
-                <router-link to="/cart">  
-                    <button type="button" class="btn btn-dark" @click="AddToCart"> Add to cart </button>
-                </router-link>
+                <!-- <router-link to="/cart">   -->
+                    <button type="button" class="btn btn-dark" @click="AddToCart" > Add to cart </button>
+                <!-- </router-link> -->
             </div>
 
             <div class="col-8">
@@ -132,18 +146,18 @@ export default {
     data() {
         return {
             emailregist: '',
-            size:'',
             username: '',
             cId: '',
             Contact: {},
-            p_qty: 1,
             Product: {
                 _id: '',
                 name: '',
                 description1: '',
                 description2: '',
+                p_qty: 1,
                 price: 0,
-                img: ''
+                img: '',
+                size: 0
             }
             
         }
@@ -153,6 +167,8 @@ export default {
         axios.get(localhostproduct + this.$route.params.productId)
             .then((response) => {
                 this.Product = response.data
+                this.Product.p_qty = 1
+                this.Product.size = ' -'
                 console.log(this.Product)
             })
             .catch((error) => {
@@ -176,7 +192,6 @@ export default {
         .catch((error)=>{
             console.log(error)
         })
-
         //add history of customer
         setTimeout(()=>{
             var productId = {
@@ -215,6 +230,7 @@ export default {
             }
         },
         AddToCart(){
+            // alert(this.Product.size)
             if(this.username!=null){
                 var orderinfo = {
                     productId: this.Product._id,
@@ -226,22 +242,26 @@ export default {
                     qty: this.Product.p_qty,
                     size: this.Product.size
                 }
-                axios.post(localhostorders+this.cId, orderinfo)
-                .then((response)=>{
-                    console.log(response)
-                })
-                .catch((error)=>{
-                    console.log(error)
-                })
-                // this.$router.replace('/cart')
+                if(orderinfo.size>0){
+                    axios.post(localhostorders+this.cId, orderinfo)
+                    .then((response)=>{
+                        console.log(response)
+                    })
+                    .catch((error)=>{
+                        console.log(error)
+                    })
+                    window.location='/cart'
+                }
+                else{
+                    alert("Please Select Size")
+                } 
             }else{
                 this.$router.replace('/signin')
             }
-        }
+        },
     }
 }
 </script>
 
 <style>
-
 </style>

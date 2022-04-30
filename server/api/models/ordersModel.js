@@ -35,6 +35,10 @@ var OrdersSchema = new Schema({
         qty:{
             type: Number,
             Required: 'Please enter'
+        },
+        size:{
+            type: Number,
+            Required: 'Please enter'
         }
     }],
     subtotal: {

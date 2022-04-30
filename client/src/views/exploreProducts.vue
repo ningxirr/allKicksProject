@@ -24,8 +24,6 @@
         </ul>
         <form class="d-flex">
           <a class="nav-link" href="/cart"><i class="bi bi-bag-check-fill" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a>
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="search">
-          <!-- <a class="nav-link" href="/signin"><i class="bi bi-person-circle" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a> -->
           <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
             <i class="bi bi-person-circle" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i>
@@ -57,7 +55,7 @@
             <div>{{ product_alias.description1 }}</div>
             <div>{{ product_alias.description2 }}</div>
           </div>
-          <h5><b>${{ product_alias.price }} {{this.username}}</b></h5><br><br>
+          <h5><b>${{ product_alias.price }}</b></h5><br><br>
           <br>
           </div>
           </router-link>
@@ -98,7 +96,8 @@
       if (user !== null) {
         this.emailregist = user.email
         this.username = user.email.split('@')[0];
-        axios.get(localhost)
+      }
+      axios.get(localhost)
             .then((reponse) => {
               this.Products = reponse.data
               console.log()
@@ -106,7 +105,6 @@
             .catch((error) => {
               console.log(error)
             })
-      }
     },
     methods:{
       logIn(){

@@ -5,6 +5,8 @@ module.exports = function(app){
     app.route('/orders/:custId')
         .get(order.showOrderById)
         .post(order.customerOrder)
-        .delete(order.deleteOrder)
+
+    app.route('/updateorders/:custId')
+        .post(order.updateOrder)
 
 }
