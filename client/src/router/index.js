@@ -4,7 +4,6 @@ import { getAuth } from 'firebase/auth'
 import Cart from '../views/cart.vue'
 import Explore from '../views/exploreProducts.vue'
 import Home from '../views/home.vue'
-import HomeP from '../views/homepage.vue'
 import Signin from '../views/signin.vue'
 import Signup from '../views/signup.vue'
 import Product from '../views/product.vue'
@@ -26,11 +25,6 @@ const routes = [
         path: '/home',
         name: 'Home',
         component: Home,
-      },
-      {
-        path: '/homep',
-        name: 'HomeP',
-        component: HomeP,
       },
       {
         path: '/explore',

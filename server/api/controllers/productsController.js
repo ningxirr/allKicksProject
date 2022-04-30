@@ -1,4 +1,3 @@
-// api/controllers/userListController.js
 'use strict'
 var mongoose = require('mongoose')
 Product = mongoose.model('products')

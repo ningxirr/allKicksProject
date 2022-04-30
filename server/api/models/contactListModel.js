@@ -39,7 +39,16 @@ var ContactSchema = new Schema({
     },
     phone:{
         type: String
-    }
+    },
+    history:[{
+        productId:{
+            type: String
+        },
+        createdDate:{
+            type: Date,
+            default :Date.now //default ไม่ต้อง required
+        }
+    }]
 })
 
 module.exports = mongoose.model('contacts', ContactSchema)

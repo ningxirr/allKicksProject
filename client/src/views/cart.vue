@@ -24,7 +24,15 @@
         <form class="d-flex">
           <a class="nav-link" href="/cart"><i class="bi bi-bag-check-fill" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a>
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="search">
-          <a class="nav-link" href="/signin"><i class="bi bi-person-circle" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a>
+          <!-- <a class="nav-link" href="/signin"><i class="bi bi-person-circle" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a> -->
+            <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="bi bi-person-circle" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-lg-end" style="text-align:right">
+            <li>Welcome {{this.username}} !&nbsp;</li>
+            <li><a class="dropdown-item" @click="logout()">Signout</a></li>
+          </ul>
         </form>
       </div>
     </div>
@@ -33,10 +41,11 @@
     <div class="container col-10 pt-5">
         <h1><b>Checkout </b></h1>
         <div class="row pt-5">
-            <div class="col-7">
-                <div class="mb-3" style="border-right: 1px solid  rgb(176, 175, 175);">
+            <div class="col-7" style="border-right: 1px solid  rgb(176, 175, 175); margin-right: 30px;">
+                <div class="mb-3">
                     <label class="form-label">Contact Infomation <span class="text-danger">*</span></label>
                     <input type="email" class="form-control" id="exampleFormControlInput1"  v-model="this.emailregist" disabled>
+                    
                     <br>
                     <label class="form-label">Shipping address</label>
                     <div class="row">
@@ -61,12 +70,50 @@
                     </div><br>
                     <input type="email" class="form-control" placeholder="Phone (optional)" v-model="Contact.phone"><br>
                 </div>
+                <br>
+                <button type="button" class="btn btn-dark" @click="LoadAddress" >Load Address</button>&nbsp;&nbsp;
                 <br><br>
-                <button type="button" class="btn btn-dark" @click="AddShipping" >Done</button>
             </div>
+            
+            <div class="col">
+                <table class="table">
+                    <tbody>
+                        <tr v-for = "(aProduct, key) in Order.order" :key='key'> 
+                            <div class="row">
+                                <div class="col-4">
+                                    <img v-bind:src="`/src/assets/imgproducts/${aProduct.img}/${aProduct.img}-middle.png`" class="card-img-top" alt="...">
+                                </div>
+                                <div class="col">
+                                    <h5><b>{{aProduct.name}}</b></h5>
+                                    <p>{{aProduct.description1}} {{aProduct.description2}}</p>
+                                    <h5><b>${{aProduct.price}}</b> </h5>
+                                </div>
+                            </div>
+                            <hr>
+                        </tr>
 
-            <div class="col-4">
+                        <tr>
+                            <div>
+                                <p style="float: left;">Subtotal</p><p style="float:right;">$ {{this.subtotal}}</p>
+                            </div>
+                            <div>
+                                <p style="float: left;">Shipping</p><p style="float:right;">$ {{this.shipping}}</p>
+                            </div>
+                            <hr>
+                        </tr>
+                        <tr>
+                            <div>
+                                <p style="float: left;">Shipping</p><h3 style="float:right;"><b>$ {{this.total}}</b></h3>
+                            </div>
+                        </tr>
+                        <div style="text-align:center;">
+                            <button type="button" class="btn btn-dark" @click="AddShipping" >Done</button> &nbsp;
+                            <button type="button" class="btn btn-dark" @click="AddShipping" >Receipt</button>
+                        </div>
+                        
+                    </tbody>
 
+                </table>
             </div>
         </div>
     </div>
@@ -76,13 +123,16 @@
 <script>
 import { getAuth } from "firebase/auth";
 import axios from 'axios'
-let localhost = "http://localhost:5001/contacts/"
+let localhostcontact = "http://localhost:5001/contacts/"
+let localhostorder = "http://localhost:5001/orders/"
     export default {
         name: 'Cart',
         data() {
             return {
+                username: '',
                 emailregist: '',
                 Contact : {
+                    _id: '',
                     email: '',
                     firstName: '',
                     lastName: '',
@@ -93,29 +143,69 @@ let localhost = "http://localhost:5001/contacts/"
                     country: '',
                     postal: '',
                     phone: ''
-                }
+                },
+                Order: {},
+                subtotal: 0,
+                shipping: 10,
+                total: 0
             }
         },
         mounted() {
             var auth = getAuth();
             var user = auth.currentUser;
             if (user !== null) {
-                this.emailregist = user.email;
-                console.log(this.emailregist)
+                this.emailregist = user.email
+                this.username = user.email.split('@')[0];
             }
-            axios.get(localhost+this.emailregist)
+            console.log("get customer order")
+            axios.get(localhostcontact+'email/'+this.emailregist)
+                .then((response)=>{
+                    console.log(this.emailregist)
+                    this.Contact._id = response.data
+                    console.log(this.Contact)
+                })
+                .catch((error)=>{
+                    console.log(error)
+                })
+            // axios.get("http://localhost:5001/orders/626befa65658ecf63a1834df")
+            axios.get(localhostorder+this.Contact.emailregist)
             .then((response)=>{
-                this.Contact = response.data
-                console.log(this.Contact)
+                this.Order = response.data
+                console.log(`order = ${this.Order}`)
+                for(var i=0; i<this.Order.order.length; i++){
+                    console.log(this.Order.order.price)
+                    this.subtotal += parseInt(this.Order.order[i].price)
+                }
+                this.total = this.subtotal+this.shipping
             })
             .catch((error)=>{
                 console.log(error)
             })
+            
+            // alert("1")
+            /* setTimeout(()=> {
+                for(var i=0; i<this.Order.order.length; i++){
+                    console.log(this.Order.order.price)
+                    this.subtotal += parseInt(this.Order.order[i].price)
+                }
+            },1000) */
         },
         methods: {
+            LoadAddress(){
+                axios.get(localhostcontact+'email/'+this.emailregist)
+                .then((response)=>{
+                    // this.cId = response.data._id
+                    console.log(this.emailregist)
+                    this.Contact = response.data
+                    console.log(this.Contact)
+                })
+                .catch((error)=>{
+                    console.log(error)
+                })
+            },
             AddShipping(){
                 let newContact = {
-                    email: this.Contact.email,
+                    email: this.emailregist,
                     firstName: this.Contact.firstName,
                     lastName: this.Contact.lastName,
                     company: this.Contact.company,
@@ -138,7 +228,7 @@ let localhost = "http://localhost:5001/contacts/"
                 }
                 else if(newContact.firstName!=''||newContact.lastName!=''||newContact.address!=''||newContact.city!=''||newContact.country!=''){
                     if((newContact.email!=''&&newContact.email.match(mail))||newContact.email==''){
-                        axios.post(localhost+this.emailregist, newContact)
+                        axios.post(localhostcontact+'edit/'+this.emailregist, newContact)
                         .then((response)=>{
                             console.log(response)
                             alert("succuss")
@@ -156,8 +246,17 @@ let localhost = "http://localhost:5001/contacts/"
                 else{
                     alert("Field cannot be left blank")
                 } 
-            }
-        },
+            }/* ,
+            subtotal(){
+                console.log(this.Order.order.price)
+                var subtotal=0
+                for(var i=0; i<this.Order.order.length; i++){
+                    console.log(this.Order.order.price)
+                    subtotal += this.Order.order.price
+                } 
+                return 0
+            } */
+        }
     }
 </script>
 

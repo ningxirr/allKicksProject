@@ -6,8 +6,14 @@ module.exports = function(app){
         .get(contactList.showAllContact)
         .post(contactList.addNewContact)
 
-    app.route('/contacts/:contactEmail')
+    app.route('/contacts/:contactId')
         .get(contactList.showOneContact)
-        .post(contactList.editAContact)
+        .post(contactList.addContactHistory)
+        // .post(contactList.editAContact)
         /*.delete(contactList.deleteAContact) */
+
+    app.route('/contacts/email/:contactEmail')
+            .get(contactList.showOneContactByEmail)
+    /* app.route('/contacts/:contactId/:productId')
+        .post(contactList.addContactHistory) */
 }
