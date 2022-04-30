@@ -4,8 +4,8 @@ Order = mongoose.model('orders')
 
 exports.showOrderById = function(req, res){
     console.log("showOrderById")
-    console.log(req.params.custEmail)
-    Order.findOne({email: req.params.custEmail}, function(err, customerOrder){
+    console.log(req.params.customerId)
+    Order.findOne({customerId: req.params.custId}, function(err, customerOrder){
         if(err) throw err
         console.log(customerOrder)
         res.json(customerOrder)

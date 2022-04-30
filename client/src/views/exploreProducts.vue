@@ -12,10 +12,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link " aria-current="page" href="/">Home</a>
+            <a class="nav-link " href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="/explore">Shop</a>
+            <a class="nav-link active" aria-current="page" href="/explore">Shop</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/aboutus">About us</a>
@@ -32,10 +32,9 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-lg-end" style="text-align:right">
             <li>Welcome {{this.username}} !&nbsp;</li>
-            <li><a class="dropdown-item" @click="logout()">Signout</a></li>
+            <li v-if="username"><a class="dropdown-item" @click="logOut()">Signout</a></li>
+            <li v-else><a class="dropdown-item" @click="logIn()">Signin</a></li>
           </ul>
-          
-
         </form>
       </div>
     </div>
@@ -51,14 +50,14 @@
       <div class="row row-cols-1 row-cols-md-3 g-4" >
         <div class="col" v-for="product_alias in filterProducts" v-bind:key="product_alias._id" >
           <router-link :to="{ path: 'product', name: 'Product', params:{productId: product_alias._id} } " style="text-decoration : none;">
-          <div class="card text-dark bg-light mb-3 h-100 " style="width: 20rem;">
-            <img v-bind:src="`./src/assets/imgproducts/${product_alias.img}/${product_alias.img}-middle.png`" class="card-img-top" alt="..." height="160" width="40">
-          <div class="card-body">
+          <div class="card text-dark bg-light mb-3 h-100 center" style="width: 18rem;"> <br><br>
+            <img v-bind:src="`./src/assets/imgproducts/${product_alias.img}/${product_alias.img}-middle.png`" class="card-img-top center" alt="..." style="width: 190px;">
+          <div class="card-body" >
             <h5 class="card-title"><strong>{{ product_alias.name }}</strong></h5>
             <div>{{ product_alias.description1 }}</div>
             <div>{{ product_alias.description2 }}</div>
           </div>
-          <h5><b>${{ product_alias.price }} {{this.username}}</b></h5>
+          <h5><b>${{ product_alias.price }} {{this.username}}</b></h5><br><br>
           <br>
           </div>
           </router-link>
@@ -69,7 +68,7 @@
     <div style="text-align: center">
         <router-link to="/cart">
           <button type="button" class="btn btn-outline-dark">
-            <a>Find more</a>
+            <a style="padding:0">Find more</a>
           </button>
         </router-link>
       </div>
@@ -81,9 +80,7 @@
 <script>
   import axios from 'axios'
   import { getAuth } from "firebase/auth";
-  // import { fb } from '../firebase'
-  // import * as firebase from "firebase";
-  // import 'firebase/auth'
+  import {signOut } from 'firebase/auth'
   let localhost = "http://localhost:5001/products/"
   export default {
     name: 'Products',
@@ -101,36 +98,32 @@
       if (user !== null) {
         this.emailregist = user.email
         this.username = user.email.split('@')[0];
+        axios.get(localhost)
+            .then((reponse) => {
+              this.Products = reponse.data
+              console.log()
+            })
+            .catch((error) => {
+              console.log(error)
+            })
       }
-
-      axios.get(localhost)
-        .then((reponse) => {
-          this.Products = reponse.data
-          console.log()
-        })
-        .catch((error) => {
-          console.log(error)
-        })
     },
     methods:{
-      checkStatus(){
-        
+      logIn(){
+        this.$router.replace('/signin')
       },
-      logout(){
-        console.log("logout")
-        /* fb.auth().signOut()
-        .then(() => {
-          this.$router.replace('/signin')
-        })
-        .catch((err)=>{
-          console.log(err)
-        }) */
-        firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          this.$router.replace('/signin')
-        });
+      logOut(){
+          const currentUser = getAuth().currentUser
+          const auth = getAuth()
+          if (currentUser&&auth){
+            signOut(auth)
+            .then(()=>{
+              this.$router.replace('/signin')
+            })
+            .catch((error)=>{
+              alert(error.message)
+            })
+          }
       }
     },
     computed: {
@@ -144,21 +137,39 @@
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap');
-  a{
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins',sans-serif;
-    font-weight: bold;
-  }
-  .centered {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    color: #fff;
-    font-size: 4em;
-    font-family: 'Poppins',sans-serif;
-    font-weight: bold;
-    transform: translate(-50%, -50%);
-  }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap');
+a{
+  margin: 0;
+  padding-right: 25px;
+  font-family: 'Poppins',sans-serif;
+  font-weight: normal;
+}
+.header {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  font-size: 3.5rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+.card {
+  box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
+  margin: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: .15s all ease-in-out;
+}
+.card:hover {
+    transform: scale(1.3);
+    z-index: 100;
+    background-color: #fff;
+}
 </style>

@@ -11,7 +11,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
+            <a class="nav-link" href="/">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/explore">Shop</a>
@@ -75,10 +75,13 @@
                 <br><br>
             </div>
             
-            <div class="col">
+            <div class="col" id="contentPrint">
                 <table class="table">
+
                     <tbody>
+                        
                         <tr v-for = "(aProduct, key) in Order.order" :key='key'> 
+                            
                             <div class="row">
                                 <div class="col-4">
                                     <img v-bind:src="`/src/assets/imgproducts/${aProduct.img}/${aProduct.img}-middle.png`" class="card-img-top" alt="...">
@@ -106,13 +109,13 @@
                                 <p style="float: left;">Shipping</p><h3 style="float:right;"><b>$ {{this.total}}</b></h3>
                             </div>
                         </tr>
-                        <div style="text-align:center;">
-                            <button type="button" class="btn btn-dark" @click="AddShipping" >Done</button> &nbsp;
-                            <button type="button" class="btn btn-dark" @click="AddShipping" >Receipt</button>
-                        </div>
-                        
                     </tbody>
 
+                    <tfoot style="text-align:center;">
+                        <br>
+                        <button type="button" class="btn btn-dark changebutton" @click="AddShipping" >Done</button> &nbsp;
+                        <button type="button" class="btn btn-dark changebutton" @click="ReceiptPDF" >Receipt</button>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -123,6 +126,9 @@
 <script>
 import { getAuth } from "firebase/auth";
 import axios from 'axios'
+import jsPDF from 'jspdf'
+// import html2canvas from 'html2canvas'
+import autoTable from 'jspdf-autotable'
 let localhostcontact = "http://localhost:5001/contacts/"
 let localhostorder = "http://localhost:5001/orders/"
     export default {
@@ -156,45 +162,55 @@ let localhostorder = "http://localhost:5001/orders/"
             if (user !== null) {
                 this.emailregist = user.email
                 this.username = user.email.split('@')[0];
-            }
-            console.log("get customer order")
-
-            axios.get(localhostcontact+'email/'+this.emailregist)
+                console.log("get customer order")
+                axios.get(localhostcontact+'email/'+this.emailregist)
                 .then((response)=>{
                     console.log(this.emailregist)
-                    this.Contact._id = response.data
+                    this.Contact = response.data
                     console.log(this.Contact)
                 })
                 .catch((error)=>{
                     console.log(error)
                 })
-
-            // axios.get("http://localhost:5001/orders/626befa65658ecf63a1834df")
-            axios.get(localhostorder+this.Contact.emailregist)
-            .then((response)=>{
-                this.Order = response.data
-                console.log(`order = ${this.Order}`)
-                for(var i=0; i<this.Order.order.length; i++){
-                    console.log(this.Order.order.price)
-                    this.subtotal += parseInt(this.Order.order[i].price)
-                }
-                this.total = this.subtotal+this.shipping
-            })
-            .catch((error)=>{
-                console.log(error)
-            })
-
-            
-
-            // alert("1")
-            /* setTimeout(()=> {
-                for(var i=0; i<this.Order.order.length; i++){
-                    console.log(this.Order.order.price)
-                    this.subtotal += parseInt(this.Order.order[i].price)
-                }
-            },1000) */
+                setTimeout(()=> {
+                    axios.get(localhostorder+this.Contact._id)
+                    .then((response)=>{
+                        this.Order = response.data
+                        console.log(`order = ${this.Order}`)
+                        for(var i=0; i<this.Order.order.length; i++){
+                            console.log(this.Order.order.price)
+                            this.subtotal += parseInt(this.Order.order[i].price)
+                        }
+                        this.total = this.subtotal+this.shipping
+                    })
+                    .catch((error)=>{
+                        console.log(error)
+                    })
+                },1000)
+            }
+            else{
+                alert("pleas log in")
+                this.$router.replace('/signin')
+            }
         },
         methods: {
+            logIn(){
+                this.$router.replace('/signin')
+            },
+            logOut(){
+                const currentUser = getAuth().currentUser
+                const auth = getAuth()
+                if (currentUser&&auth){
+                    signOut(auth)
+                    .then(()=>{
+                    this.$router.replace('/signin')
+                    })
+                    .catch((error)=>{
+                    alert(error.message)
+                    })
+                }
+            
+            },
             LoadAddress(){
                 axios.get(localhostcontact+'email/'+this.emailregist)
                 .then((response)=>{
@@ -240,7 +256,6 @@ let localhostorder = "http://localhost:5001/orders/"
                         .catch((error)=>{
                             console.log(error)
                         })
-                        this.$router.replace('/explore')
                     }
                     else{
                         alert("Please enter 'Email' in the correct format")
@@ -250,20 +265,44 @@ let localhostorder = "http://localhost:5001/orders/"
                 else{
                     alert("Field cannot be left blank")
                 } 
-            }/* ,
-            subtotal(){
-                console.log(this.Order.order.price)
-                var subtotal=0
+            },
+            ReceiptPDF(){
+                var receipt = [this.Order.order.length-1][5]
+                // receipt[0].push(this.Order.order.name)
+                console.log(this.Order.order[1].name)
                 for(var i=0; i<this.Order.order.length; i++){
-                    console.log(this.Order.order.price)
-                    subtotal += this.Order.order.price
-                } 
-                return 0
-            } */
+                    receipt[i][0].push(this.Order.order[i].name)
+                    receipt[i][1].push(this.Order.order[i].description1)
+                    receipt[i][2].push(this.Order.order[i].size)
+                    receipt[i][3].push(this.Order.order[i].price)
+                    receipt[i][4].push(this.Order.order[i].qty)
+                }
+                console.log(receipt)
+                /* var doc = new jsPDF()
+                autoTable(doc, {
+                    head: [['Brand', 'Descriprion', 'Size', 'Price', 'Qty']],
+                    margin: {top:50},
+
+                    body: [
+                        ["OffWhite", "nnnnn", "6.5 UK", "$430"]
+                    ]
+                })
+                doc.save('try.pdf') */
+                
+
+
+
+                /* const doc = new jspdf()
+                doc.text("hello world",15,15)
+                doc.save("pdf2.pdf") */
+            }
         }
     }
 </script>
 
 <style>
-    
+    .changebutton{
+        z-index: 1;
+        text-align: center;
+    }
 </style>
