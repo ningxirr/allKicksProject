@@ -77,15 +77,17 @@
       </div>
     </nav>
 
-    <div class="container pt-5" style="margin:2cm;">
+    <div class="container pt-5" style="margin: 0cm 2cm 0cm 2cm">
       <div class="row">
-        <div class="col-3" style="padding:2px;">
+        <div class="col-3" style="padding: 2px">
           <!-- {{Product._id}} -->
           <!-- {{Contact.history[0]}} -->
-          <h2 class="h2" style="color:black;">
+          <h2 class="h2" style="color: black">
             <b>{{ Product.name }}</b>
           </h2>
-          <div class="caption" style="color:black;">{{ Product.description1 }}</div>
+          <div class="caption" style="color: black">
+            {{ Product.description1 }}
+          </div>
           <br />
           <h4>
             <b>${{ Product.price }}</b>
@@ -93,7 +95,7 @@
           <div class="row">
             <br />
             <sui-dropdown
-              style="margin-top:1%"
+              style="margin-top: 1%"
               clearable
               selection
               placeholder="Select size"
@@ -114,13 +116,12 @@
             </button>
           </router-link>
         </div>
-        <div class="col-7" style="margin:0cm 1cm 0cm 1.75cm;">
+        <div class="col-7" style="margin: 0cm 1cm 0cm 1.75cm">
           <div class="row">
-              
             <img
               v-bind:src="`../src/assets/imgproducts/${Product.img}/${Product.img}-middle.png`"
               alt="..."
-              style="width:80%;"
+              style="width: 80%"
             />
           </div>
           <div class="row">
@@ -145,39 +146,51 @@
       <hr />
 
       <h4><b>Suggestion</b></h4>
-      <div class="container col-9">
-        <div class="row row-cols-1 row-cols-md-3 g-10">
+      <br>
+      <div class="container" style="text-align: center; align-content: center">
+        <div class="row">
           <div
-            class="col"
+            class="col-sm"
             v-for="(aRecent, key) in Contact.history"
             :key="key"
-            style="text-align: center"
+            style="padding-bottom: 40px"
           >
-            <!-- <div class="col" v-for = "(aRecent, index) in Contact.history"  v-if="index >= 2" :key='key' style="text-align : center;"> -->
-            <!-- <div class="col" v-for = "(aRecent, key) in startFrom(Contact.history, 3)" style="text-align : center;" :key='key'> -->
-            <!-- <router-link :to="{ path: 'product', name: 'Product', params:{productId: aRecent.productId} } " style="text-decoration : none;"> -->
-            <div
-              class="card text-dark bg-light mb-3 h-100"
-              style="width: 20rem"
+            <a
+              :href="
+                $router.resolve({
+                  name: 'Product',
+                  params: { productId: aRecent._id },
+                }).href
+              "
+              style="text-decoration: none"
             >
-              <img
-                v-bind:src="`../src/assets/imgproducts/${aRecent.img}/${aRecent.img}-middle.png`"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">
-                  <strong>{{ aRecent.name }}{{ aRecent.productId }}</strong>
-                </h5>
-                <div>{{ aRecent.description1 }}</div>
-                <div>{{ aRecent.description2 }}</div>
-              </div>
-              <h5>
-                <b>${{ aRecent.price }}</b>
-              </h5>
+              <div
+                class="card text-dark bg-light mb-3 h-100 center"
+                style="width: 18rem;margin: 0px 30px 0px 30px;"
+              >
               <br />
-            </div>
-            <!-- </router-link> -->
+              <br />
+                <img
+                  v-bind:src="`../src/assets/imgproducts/${aRecent.img}/${aRecent.img}-middle.png`"
+                  class="card-img-top center"
+                  alt="..."
+                  style="width: 190px"
+                />
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <strong>{{ aRecent.name }}{{ aRecent.productId }}</strong>
+                  </h5>
+                  <div>{{ aRecent.description1 }}</div>
+                  <div>{{ aRecent.description2 }}</div>
+                </div>
+                <h5>
+                  <b>${{ aRecent.price }}</b>
+                </h5>
+                <br />
+                <br />
+                <br />
+              </div>
+            </a>
           </div>
         </div>
       </div>
@@ -199,7 +212,7 @@
         </div>
       </div> -->
     </div>
-    <br /><br /><br />
+    <br />
   </div>
 </template>
 
@@ -248,16 +261,16 @@ export default {
       this.emailregist = user.email;
       this.username = user.email.split("@")[0];
       axios
-      .get(localhostcontact + "email/" + this.emailregist)
-      .then((response) => {
-        this.Contact = response.data;
-        this.cId = response.data._id;
-        // this.cHistory = response.data.history
-        // alert(this.Contact.history)
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .get(localhostcontact + "email/" + this.emailregist)
+        .then((response) => {
+          this.Contact = response.data;
+          this.cId = response.data._id;
+          // this.cHistory = response.data.history
+          // alert(this.Contact.history)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       //add history of customer
       setTimeout(() => {
         var productId = {
@@ -279,7 +292,6 @@ export default {
           });
       }, 1000);
     }
-    
   },
   methods: {
     logIn() {
@@ -328,6 +340,22 @@ export default {
 </script>
 
 <style>
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap");
+.card {
+  box-shadow: rgba(0, 0, 0, 0.117647) 0px 0px 0px,
+    rgba(0, 0, 0, 0.117647) 0px 0px 0px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: 0.15s all ease-in-out;
+}
+.card:hover {
+  transform: scale(1.03);
+  z-index: 100;
+  background-color: #fff;
+}
 @media screen and (min-width: 601px) {
   .caption {
     text-align: left;
