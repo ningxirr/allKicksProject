@@ -162,6 +162,7 @@ import axios from 'axios'
 import { getAuth } from "firebase/auth";
 import {signOut } from 'firebase/auth'
 let localhostproduct = "https://allkicks-backend.herokuapp.com/products/"
+// let localhostproduct = "https://allkicks-backend.herokuapp.com/products"
 let localhostcontact = "https://allkicks-backend.herokuapp.com/contacts/"
 let localhostorders = "https://allkicks-backend.herokuapp.com/orders/"
 export default {
@@ -270,11 +271,12 @@ export default {
                     axios.post(localhostorders+this.cId, orderinfo)
                     .then((response)=>{
                         console.log(response)
+                        window.location='/cart'
                     })
                     .catch((error)=>{
                         console.log(error)
                     })
-                    window.location='/cart'
+                    
                 }
                 else{
                     alert("Please Select Size")

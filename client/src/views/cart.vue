@@ -128,26 +128,22 @@
                                     <div class="col">
                                         <img v-bind:src="`/src/assets/imgproducts/${aProduct.img}/${aProduct.img}-middle.png`" class="card-img-top" alt="...">
                                     </div>
-                                    <div class="col">
-                                        <h5 class="p" style="color:black;"><b>{{aProduct.name}}</b></h5>
+                                    <div class="col" >
+                                        <h5><b>{{aProduct.name}} <i class="bi bi-trash-fill" style="color:grey;" @click="editQty(aProduct.productId, aProduct.size, 0)"></i></b></h5>
                                         <p class="p" style="color:black;">{{aProduct.description1}} {{aProduct.description2}}</p>
                                         <div class="input-group input-group-sm">
-                                                <span class="input-group-text" id="basic-addon1" style="background-color:black; color:white;">SIZE</span>
-                                                <span class="input-group-text" id="basic-addon1" style="background-color:white;">{{aProduct.size}}</span>
-                                                &nbsp;
-                                                <span class="input-group-text" id="basic-addon1" style="background-color:black; color:white;">QTY</span>
-                                                <input type="number" min="0" max="100" style="text-align:right; width:40px;" v-model="aProduct.qty">
-                                                <div class="input-group-append input-group-sm">
-                                                    <button class="btn btn-outline-secondary" @click="editQty(aProduct.productId, aProduct.size, aProduct.qty)" type="button" style="background-color:light-grey;">
-                                                        <i class="bi bi-check" style="color:green;"></i>
-                                                    </button>
-                                                </div>
-                                        </div><br>
+                                            <span class="input-group-text" id="basic-addon1" style="background-color:black; color:white;">SIZE</span>
+                                            <span class="input-group-text" id="basic-addon1" style="background-color:white;">{{aProduct.size}}</span>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span class="input-group-text" id="basic-addon1" style="background-color:black; color:white;">QTY</span>
+                                            <input type="number" min="1" max="100" style="text-align:right; width:50px;" v-model="aProduct.qty" onkeydown="return false" @change="editQty(aProduct.productId, aProduct.size, aProduct.qty)">  
+                                        </div>
+
+                                        <br>
                                         <h5><b>${{aProduct.price}}</b> </h5>
                                     </div>
                                 </div >
                             </tr>
-
                             <tr>
                                 <p class="p" style="float: left;">Subtotal</p><p class="p" style="float:right;">$ {{this.subtotal}}</p>
                             </tr>
@@ -328,13 +324,22 @@ let localhostupdateorder = "https://allkicks-backend.herokuapp.com/updateorders/
                     size: shoesize,
                     qty: q
                 }
-                if(!Orders.qty){
+                if(!Orders.qty||Orders.qty<0){
                     Orders.qty=0
                 }
+
                 axios.post(localhostupdateorder+this.Contact._id, Orders)
                 .then((response)=>{
                     console.log(response)
-                    location.reload();
+                    this.subtotal = 0
+                    for(var i=0; i<this.Order.order.length; i++){
+                        console.log(this.Order.order.price)
+                        this.subtotal += parseInt(this.Order.order[i].price*this.Order.order[i].qty)
+                    }
+                    this.total = this.subtotal+this.shipping
+                    if(Orders.qty==0){
+                        location.reload();
+                    }
                 }).catch((error)=>{
                     console.log(error)
                 })
@@ -360,16 +365,10 @@ let localhostupdateorder = "https://allkicks-backend.herokuapp.com/updateorders/
                 .then((response)=>{
                     OrderReceipt = response.data
                     console.log(`order : ${OrderReceipt.order}`)
-                    for(var i=0; i<OrderReceipt.order.length; i++){
-                        console.log(OrderReceipt.order.price)
-                        this.subtotal += parseInt(OrderReceipt.order[i].price*OrderReceipt.order[i].qty)
-                    }
-                    this.total = this.subtotal+this.shipping
                 })
                 .catch((error)=>{
                     console.log(error)
                 })
-
                 setTimeout(()=> {
                     if(ContactReceipt.firstName!=null && this.subtotal!=0){
                         var receipt = new Array(OrderReceipt.order.length);
@@ -440,13 +439,7 @@ let localhostupdateorder = "https://allkicks-backend.herokuapp.com/updateorders/
                         doc.text(`Total         ${this.total}`, 185, length+26, 'right');
                         doc.save('allKicks-receipt.pdf')
                     }
-                    else if(this.subtotal!=0){
-                        alert("please add your information")
-                    }
-                    else if(this.subtotal==0){
-                        alert("please select quality")
-                    }
-                },500)
+                },1000)
                 
             }
         }
