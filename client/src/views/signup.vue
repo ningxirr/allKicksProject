@@ -39,14 +39,14 @@
   
     <div class="container col-10 pt-5">
       <div class="row">
-        <div class="col-4">
+        <div class="col-5">
           <form class="signin" @submit.prevent="Login">
-            <h1>Sign Up</h1>
+            <h1 class="header-sign">Sign Up</h1>
             <br><br>
-            <h5><b>Email</b></h5>
+            <h5 class="h5" style="color:black;">Email</h5>
             <input type="email" v-model="formData.email" class="form-control" placeholder="email" >
             <br>
-            <h5><b>Password</b></h5>
+            <h5 class="h5" style="color:black;">Password</h5>
             <input type="password" v-model="formData.password" class="form-control" placeholder="password">
             <br>
             <button class="btn btn-success" @click="signUp">SignUp</button>
@@ -123,5 +123,66 @@ export default {
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display+SC&family=Poppins:wght@200;700&display=swap");
+@media screen and (min-width: 601px) {
+  .caption {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    font-size: 1.5rem;
+    font-family: "Poppins", sans-serif;
+    color: #fff;
+  }
+  .header-sign {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    font-size: 80px;
+    font-family: "Poppins", sans-serif;
+    color: rgb(0, 0, 0);
+  }
+  .h5 {
+    font-size: 1rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: normal;
+    color: #fff;
+  }
+  .h2 {
+    font-size: 3rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    color: #fff;
+  }
+}
+@media screen and (max-width: 600px) {
+  .caption {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    font-family: "Poppins", sans-serif;
+    color: #fff;
+  }
+  .header-sign {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    font-size: 40px;
+    font-family: "Poppins", sans-serif;
+    color: rgb(0, 0, 0);
+  }
+  .h5 {
+    font-size: 0.75rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: normal;
+    color: #fff;
+  }
+  .h2 {
+    font-size: 1.75rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    color: #fff;
+  }
+}
 
 </style>

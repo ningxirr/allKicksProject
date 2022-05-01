@@ -109,31 +109,37 @@
                 <br><br>
             </div>
             <div class="col">
-                <div v-if="Order.order!=0">
+                <div v-if="Order.order==undefined" style="text-align: center">
+                    <br><br><br><br>
+                    <p >No order</p><br>
+                    <a href="/explore" style="text-decoration: none">
+                        <button type="button" class="btn btn-outline-dark" style="margin-left:20px">
+                            <a style="padding: 0">Go to Shopping</a>
+                        </button>
+                    </a>
+                </div>
+                <div v-else-if="Order.order!=0" style="text-align: center">
                     <table class="table">
                         <tbody>
                             <tr v-for = "(aProduct, key) in Order.order" :key='key' > 
-                                <div class="row" style="border-bottom: 1pt solid #C0C0C0; margin:10px;">
-                                    <div class="col-4">
+                                <div class="row" style="border-bottom: 1pt solid #C0C0C0; margin:15px;">
+                                    <div class="col">
                                         <img v-bind:src="`/src/assets/imgproducts/${aProduct.img}/${aProduct.img}-middle.png`" class="card-img-top" alt="...">
                                     </div>
                                     <div class="col">
-                                        <h5><b>{{aProduct.name}}</b></h5>
-                                        <p>{{aProduct.description1}} {{aProduct.description2}}</p>
+                                        <h5 class="p" style="color:black;"><b>{{aProduct.name}}</b></h5>
+                                        <p class="p" style="color:black;">{{aProduct.description1}} {{aProduct.description2}}</p>
                                         <div class="input-group input-group-sm">
-                                        <!--  <div class="input-group input-group-sm"> -->
                                                 <span class="input-group-text" id="basic-addon1" style="background-color:black; color:white;">SIZE</span>
                                                 <span class="input-group-text" id="basic-addon1" style="background-color:white;">{{aProduct.size}}</span>
-                                            <!-- </div> -->
-                                            <!-- <div class="input-group input-group-sm" style="margin-top:10px;"> -->
-                                                <span class="input-group-text" id="basic-addon1" style="background-color:black; color:white; margin-left:10px;">QTY</span>
-                                                <input type="number" min="0" max="100" style="text-align:right; width:50px;" v-model="aProduct.qty">
+                                                &nbsp;
+                                                <span class="input-group-text" id="basic-addon1" style="background-color:black; color:white;">QTY</span>
+                                                <input type="number" min="0" max="100" style="text-align:right; width:40px;" v-model="aProduct.qty">
                                                 <div class="input-group-append input-group-sm">
                                                     <button class="btn btn-outline-secondary" @click="editQty(aProduct.productId, aProduct.size, aProduct.qty)" type="button" style="background-color:light-grey;">
                                                         <i class="bi bi-check" style="color:green;"></i>
                                                     </button>
                                                 </div>
-                                            <!-- </div> -->
                                         </div><br>
                                         <h5><b>${{aProduct.price}}</b> </h5>
                                     </div>
@@ -141,10 +147,10 @@
                             </tr>
 
                             <tr>
-                                <p style="float: left;">Subtotal</p><p style="float:right;">$ {{this.subtotal}}</p>
+                                <p class="p" style="float: left;">Subtotal</p><p class="p" style="float:right;">$ {{this.subtotal}}</p>
                             </tr>
                             <tr style="border-bottom: 1pt solid #C0C0C0;">
-                                <p style="float: left;">Shipping</p><p style="float:right;">$ {{this.shipping}}</p>
+                                <p class="p" style="float: left;">Shipping</p><p class="p" style="float:right;">$ {{this.shipping}}</p>
                             </tr>
                             <tr>
                                 <div style="margin-top:10px">
@@ -159,13 +165,14 @@
                 </div>
                 <div v-else style="text-align: center">
                     <br><br><br><br>
-                    <p>No order</p><br>
+                    <p >No order</p><br>
                     <a href="/explore" style="text-decoration: none">
-                        <button type="button" class="btn btn-outline-dark">
+                        <button type="button" class="btn btn-outline-dark" style="margin-left:20px">
                             <a style="padding: 0">Go to Shopping</a>
                         </button>
                     </a>
                 </div>
+                <br>
             </div>
             
         </div>
@@ -228,7 +235,7 @@ let localhostupdateorder = "http://localhost:5001/updateorders/"
                     axios.get(localhostorder+this.Contact._id)
                     .then((response)=>{
                         this.Order = response.data
-                        console.log(`order = ${this.Order}`)
+                        console.log(`order : ${this.Order.order}`)
                         for(var i=0; i<this.Order.order.length; i++){
                             console.log(this.Order.order.price)
                             this.subtotal += parseInt(this.Order.order[i].price*this.Order.order[i].qty)
@@ -241,7 +248,7 @@ let localhostupdateorder = "http://localhost:5001/updateorders/"
                 },500)
             }
             else{
-                alert("pleas log in")
+                alert("please log in")
                 this.$router.replace('/signin')
             }
         },
@@ -360,7 +367,7 @@ let localhostupdateorder = "http://localhost:5001/updateorders/"
                     doc.line(15, 67, 190, 67, 'F')
 
                     autoTable(doc, {
-                        head: [['Brand', 'Descriprion', 'Size(UK)', 'Price', 'Qty']],
+                        head: [['Brand', 'Description', 'Size(UK)', 'Price', 'Qty']],
                         margin: {top:75},
                         body: receipt,
                         theme: 'plain'               
@@ -380,6 +387,65 @@ let localhostupdateorder = "http://localhost:5001/updateorders/"
 </script>
 
 <style>
+    @import url("https://fonts.googleapis.com/css2?family=Playfair+Display+SC&family=Poppins:wght@200;700&display=swap");
+    @media screen and (min-width: 801px) {
+    .caption {
+        text-align: left;
+        margin: 0;
+        padding: 0;
+        font-size: 1.5rem;
+        font-family: "Poppins", sans-serif;
+        color: #fff;
+    }
+    .header-sign {
+        text-align: left;
+        margin: 0;
+        padding: 0;
+        font-size: 80px;
+        font-family: "Poppins", sans-serif;
+        color: rgb(0, 0, 0);
+    }
+    .h2 {
+        font-size: 3rem;
+        font-family: "Poppins", sans-serif;
+        font-weight: bold;
+        color: #fff;
+    }
+    .p {
+        font-size: 1.2rem;
+        font-family: "Poppins", sans-serif;
+        font-weight: normal;
+    }
+    }
+    @media screen and (max-width: 800px) {
+    .caption {
+        text-align: left;
+        margin: 0;
+        padding: 0;
+        font-size: 1rem;
+        font-family: "Poppins", sans-serif;
+        color: #fff;
+    }
+    .header-sign {
+        text-align: left;
+        margin: 0;
+        padding: 0;
+        font-size: 40px;
+        font-family: "Poppins", sans-serif;
+        color: rgb(0, 0, 0);
+    }
+    .h2 {
+        font-size: 1.75rem;
+        font-family: "Poppins", sans-serif;
+        font-weight: bold;
+        color: #fff;
+    }
+    .p {
+        font-size: 0.75rem;
+        font-family: "Poppins", sans-serif;
+        font-weight: normal;
+    }
+    }
     .changebutton{
         z-index: 1;
         text-align: center;

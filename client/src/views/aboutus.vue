@@ -74,7 +74,7 @@
             <h3 style="padding:0cm 1cm 0cm 1cm"><b>Web programming course project</b></h3>
             <p style="padding:0cm 1cm 0cm 1cm">Web programming refers to the writing, markup and coding involved in Web development, which includes Web content, Web client and server scripting and network security. The most common languages used for Web programming are XML, HTML, JavaScript, Perl 5 and PHP. Web programming is different from just programming, which requires interdisciplinary knowledge on the application area, client and server scripting, and database technology.
 
-</p>
+        </p>
             <br><br>
         </div>
     </div>

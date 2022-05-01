@@ -246,30 +246,61 @@ a {
   font-weight: bold;
   color: rgb(0, 0, 0);
 }
+
 .center {
   display: block;
   margin-left: auto;
   margin-right: auto;
   width: 50%;
 }
-.centered {
-  position: relative;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
 .card {
-  box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px,
-    rgba(0, 0, 0, 0.117647) 0px 1px 4px;
-  margin: 12px;
+  box-shadow: rgba(0, 0, 0, 0.117647) 0px 0px 0px,
+    rgba(0, 0, 0, 0.117647) 0px 0px 0px;
+  text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: 0.15s all ease-in-out;
 }
 .card:hover {
-  transform: scale(1.1);
+  transform: scale(1.03);
   z-index: 100;
   background-color: #fff;
+}
+@media screen and (max-width: 600px) {
+  .centered {
+    font-size: 2rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+  }
+  .logo {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    font-size: 2rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    color: #fff;
+  }
+}
+@media screen and (min-width: 601px) {
+  .centered {
+    font-size: 3.5rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+  }
+  .logo {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    font-size: 3.5rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    color: #fff;
+  }
 }
 </style>

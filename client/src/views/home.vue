@@ -95,14 +95,12 @@
       <video class="img-fluid" style="width: 100%" autoplay loop muted>
         <source src="../assets/jordan_shoes_b-roll.mp4" type="video/mp4" />
       </video>
-      <!-- <div class="centered" style="text-align: center">Find your favorite shoes</div> -->
     </section>
     
     <div class="reveal" style="padding: 3cm;">
       <h1 class="logo" style="color:black;text-align: center;">Find your happy place. Find your happy pair. </h1>
       <h1 class="caption" style="color:black;text-align: center;">Lace up your sneaks, get out there and make it happen.</h1>
     </div>
-    <!-- <img src="../assets/homepage/road.png" class="img-fluid" alt="Image" > -->
 
     <div class="reveal bg-color" style="padding:2cm;text-align: center;">
       <div class="row row-cols-1 row-cols-md-3 g-3">
@@ -146,24 +144,7 @@ export default {
     if (user !== null) {
       this.emailregist = user.email
       this.username = user.email.split('@')[0];
-      /* axios.get(localhost)
-          .then((reponse) => {
-            this.Products = reponse.data
-            console.log()
-          })
-          .catch((error) => {
-            console.log(error)
-          }) */
     }
-    /* axios
-      .get(localhost)
-      .then((reponse) => {
-        console.log(reponse.data);
-        this.Products = reponse.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      }); */
   },
   methods: {
     logIn(){
@@ -183,16 +164,6 @@ export default {
           }
       },
   },
- /*  computed: {
-    filterProducts: function () {
-      return this.Products.filter((product) => {
-        return (
-          product.name.match(this.search) ||
-          product.description.match(this.search)
-        );
-      });
-    },
-  }, */
 };
 function reveal() {
       var reveals = document.querySelectorAll(".reveal");
@@ -212,15 +183,6 @@ window.addEventListener("scroll", reveal);
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display+SC&family=Poppins:wght@200;700&display=swap");
-/* .logo {
-  text-align: left;
-  margin: 0;
-  padding: 0;
-  font-size: 3.5rem;
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
-  color: #fff;
-} */
 @media screen and (min-width: 601px) {
   .caption {
     text-align: left;
@@ -304,7 +266,6 @@ window.addEventListener("scroll", reveal);
   transform: translate(-50%, -50%);
 }
 .bg-img {
-  /* background-image: url("../assets/bg-home.png"); */
   position: absolute;
   z-index: 1;
 }
