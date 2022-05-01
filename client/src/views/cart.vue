@@ -251,7 +251,7 @@ let localhostupdateorder = "http://localhost:5001/updateorders/"
                     .catch((error)=>{
                         console.log(error)
                     })
-                },500)
+                },1000)
             }
             else{
                 alert("please log in")
