@@ -114,6 +114,7 @@
     <br />
     <br />
 
+    <!-- show all Products -->
     <div class="container" style="text-align: center; align-content: center">
       <div class="row">
         <div
@@ -182,12 +183,14 @@ export default {
     }
   },
   mounted() {
+    // check user login (show username on navbar)
     var auth = getAuth();
     var user = auth.currentUser;
     if (user !== null) {
       this.emailregist = user.email;
       this.username = user.email.split("@")[0];
     }
+    // get all products from database
     axios
       .get(localhost)
       .then(reponse => {
@@ -253,6 +256,7 @@ a {
   margin-right: auto;
   width: 50%;
 }
+/* zoom card when mouse hover*/
 .card {
   box-shadow: rgba(0, 0, 0, 0.117647) 0px 0px 0px,
     rgba(0, 0, 0, 0.117647) 0px 0px 0px;
@@ -267,6 +271,7 @@ a {
   z-index: 100;
   background-color: #fff;
 }
+/* font responsive for matching with screen */
 @media screen and (max-width: 600px) {
   .centered {
     font-size: 2rem;
@@ -285,6 +290,7 @@ a {
     color: #fff;
   }
 }
+/* font responsive for matching with screen */
 @media screen and (min-width: 601px) {
   .centered {
     font-size: 3.5rem;

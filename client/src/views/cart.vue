@@ -105,10 +105,11 @@
                     </div><br>
                     <input type="email" class="form-control" placeholder="Phone (optional)" v-model="Contact.phone"><br>
                 </div>
-                <button type="button" class="btn btn-dark" style="background-color:black" @click="AddShipping">Update</button> &nbsp;
+                <button type="button" class="btn btn-dark" style="background-color:black" @click="UpdateInfo">Update</button> &nbsp;
                 <br><br>
             </div>
             <div class="col">
+                <!-- if new customer hasn't ordered (order document hasn't created) -->
                 <div v-if="Order.order==undefined" style="text-align: center">
                     <br><br><br><br>
                     <p >No order</p><br>
@@ -118,6 +119,7 @@
                         </button>
                     </a>
                 </div>
+                <!-- if Customer has oredered and showed item -->
                 <div v-else-if="Order.order!=0" style="text-align: center">
                     <table class="table">
                         <tbody>
@@ -163,6 +165,7 @@
                         </tbody>
                     </table>
                 </div>
+                <!-- if Customer has oredered and deleted item -->
                 <div v-else style="text-align: center">
                     <br><br><br><br>
                     <p >No order</p><br>
@@ -216,12 +219,14 @@ let localhostupdateorder = "http://localhost:5001/updateorders/"
             }
         },
         mounted() {
+            // check user login (show username on navbar)
             var auth = getAuth();
             var user = auth.currentUser;
             if (user !== null) {
                 this.emailregist = user.email
                 this.username = user.email.split('@')[0];
                 console.log("get customer order")
+                // get customer detail
                 axios.get(localhostcontact+'email/'+this.emailregist)
                 .then((response)=>{
                     console.log(this.emailregist)
@@ -232,6 +237,7 @@ let localhostupdateorder = "http://localhost:5001/updateorders/"
                     console.log(error)
                 })
                 setTimeout(()=> {
+                    // get orders of customer
                     axios.get(localhostorder+this.Contact._id)
                     .then((response)=>{
                         this.Order = response.data
@@ -270,7 +276,8 @@ let localhostupdateorder = "http://localhost:5001/updateorders/"
                 }
             
             },
-            AddShipping(){
+            // customer updated his information
+            UpdateInfo(){
                 let newContact = {
                     email: this.emailregist,
                     firstName: this.Contact.firstName,
@@ -284,35 +291,37 @@ let localhostupdateorder = "http://localhost:5001/updateorders/"
                     phone: this.Contact.phone
                 }
                 console.log(newContact)
-                let mail = /\S+@\S+\.\S+/
                 let postal_num = /^\d{5}$/
                 let phone_num = /^\d{10}$/
-                if(!newContact.phone.match(phone_num)){
-                    alert("Please enter 'Phone No' in the correct format and enter only number")
-                }
-                else if(!newContact.postal.match(postal_num)){
-                    alert("Please enter 'Postal' in the correct format and enter only number")
-                }
-                else if(newContact.firstName!=''||newContact.lastName!=''||newContact.address!=''||newContact.city!=''||newContact.country!=''){
-                    if((newContact.email!=''&&newContact.email.match(mail))||newContact.email==''){
-                        axios.post(localhostcontact+'edit/'+this.emailregist, newContact)
-                        .then((response)=>{
-                            console.log(response)
-                            alert("update succuss")
-                        })
-                        .catch((error)=>{
-                            console.log(error)
-                        })
+                if(newContact.firstName!=null&&newContact.lastName!=null&&newContact.address!=null&&newContact.city!=null&&newContact.country!=null&&newContact.postal!=null){
+                    if(newContact.firstName!=''&&newContact.lastName!=''&&newContact.address!=''&&newContact.city!=''&&newContact.country!=''&&newContact.postal!=''){
+                        if(!newContact.postal.match(postal_num)){
+                            alert("Please enter 'Postal' in the correct format and enter only number")
+                        }
+                        else if((newContact.phone!=null&&newContact.phone.match(phone_num))||newContact.phone==null||newContact.phone==''){
+                            axios.post(localhostcontact+'edit/'+this.emailregist, newContact)
+                                .then((response)=>{
+                                    console.log(response)
+                                    alert("update succuss")
+                                })
+                                .catch((error)=>{
+                                    console.log(error)
+                                })
+                        }
+                        else{
+                            alert("Please enter 'Phone No' in the correct format and enter only number")
+                        }
                     }
                     else{
-                        alert("Please enter 'Email' in the correct format")
-                        this.$router.replace('/cart')
-                    }
+                        alert("Field cannot be left blank")
+                    } 
                 }
                 else{
                     alert("Field cannot be left blank")
-                } 
+                }
+                
             },
+            // customer edited quality of his order
             editQty(id, shoesize, q){
                 let Orders = {
                     productId: id,
@@ -325,62 +334,117 @@ let localhostupdateorder = "http://localhost:5001/updateorders/"
                     location.reload();
                 }).catch((error)=>{
                     console.log(error)
-                })  
+                })
             },
+            // print receipt order
             ReceiptPDF(){
-                if(this.Contact.firstName!=null){
-                    var receipt = new Array(this.Order.order.length);
-                    var length = 75
-                    for (var i = 0; i < this.Order.order.length; i++) {
-                        receipt[i] = new Array(5);
-                        length+=17
+                console.log("RecievePDF")
+                
+                // get customer detail FROM database
+                var ContactReceipt = {}
+                axios.get(localhostcontact+'email/'+this.emailregist)
+                .then((response)=>{
+                    console.log(this.emailregist)
+                    ContactReceipt = response.data
+                })
+                .catch((error)=>{
+                    console.log(error)
+                })
+
+                // get orders of customer FROM database
+                var OrderReceipt = {}
+                axios.get(localhostorder+this.Contact._id)
+                .then((response)=>{
+                    OrderReceipt = response.data
+                    console.log(`order : ${OrderReceipt.order}`)
+                    for(var i=0; i<OrderReceipt.order.length; i++){
+                        console.log(OrderReceipt.order.price)
+                        this.subtotal += parseInt(OrderReceipt.order[i].price*OrderReceipt.order[i].qty)
                     }
+                    this.total = this.subtotal+this.shipping
+                })
+                .catch((error)=>{
+                    console.log(error)
+                })
 
-                    for(let i=0; i<this.Order.order.length; i++){
-                        
-                        receipt[i][0]=this.Order.order[i].name
-                        receipt[i][1]=this.Order.order[i].description1
-                        receipt[i][2]=this.Order.order[i].size
-                        receipt[i][3]=this.Order.order[i].price
-                        receipt[i][4]=this.Order.order[i].qty
+                setTimeout(()=> {
+                    if(ContactReceipt.firstName!=null && this.subtotal!=0){
+                        var receipt = new Array(OrderReceipt.order.length);
+                        var length = 75
+                        for (var i = 0; i < OrderReceipt.order.length; i++) {
+                            receipt[i] = new Array(5);
+                            length+=17
+                        }
+
+                        for(let i=0; i<OrderReceipt.order.length; i++){
+                            receipt[i][0]=OrderReceipt.order[i].name
+                            receipt[i][1]=OrderReceipt.order[i].description1
+                            receipt[i][2]=OrderReceipt.order[i].size
+                            receipt[i][3]=OrderReceipt.order[i].price
+                            receipt[i][4]=OrderReceipt.order[i].qty
+                        }
+
+                        var doc = new jsPDF()
+                        var img = '/src/assets/allKickspdf.png'
+                        doc.addImage(img, 'png', 12, 10, 65, 18)
+                        doc.setFontSize(12)
+                        doc.setFont(undefined, 'bold');
+                        doc.text(`Customer:`,15,40)
+                        doc.setFont(undefined, 'normal');
+                        doc.text(`${ContactReceipt.firstName} ${ContactReceipt.lastName}`,40,40)
+
+                        doc.setFont(undefined, 'bold');
+                        doc.text(`Address:`,15,47)
+                        doc.setFont(undefined, 'normal');
+                        var company, appartment, phone
+                        if(ContactReceipt.company==undefined){
+                            company = ''
+                        }
+                        else{
+                            company = ContactReceipt.company
+                        }
+                        if(ContactReceipt.appartment==undefined){
+                            appartment = ''
+                        }
+                        else{
+                            appartment = ContactReceipt.appartment
+                        }
+                        if(ContactReceipt.phone == undefined){
+                            phone = '-'
+                        }
+                        else{
+                            phone = ContactReceipt.phone
+                        }
+                        doc.text(`${company} ${ContactReceipt.address} ${appartment}`,40,47)
+                        doc.text(`${ContactReceipt.city}, ${ContactReceipt.country} ${ContactReceipt.postal}`,40,54)
+
+                        doc.setFont(undefined, 'bold');
+                        doc.text(`Phone:`,15,61)
+                        doc.setFont(undefined, 'normal');
+                        doc.text(`${phone}`,40,61)
+                        doc.line(15, 67, 190, 67, 'F')
+
+                        autoTable(doc, {
+                            head: [['Brand', 'Description', 'Size(UK)', 'Price', 'Qty']],
+                            margin: {top:75},
+                            body: receipt,
+                            theme: 'plain'               
+                        })
+                        doc.line(15, length, 190, length, 'F')
+                        doc.setFont(undefined, 'bold');
+                        doc.text(`Subtotal        ${this.subtotal}`, 185, length+12, 'right');
+                        doc.text(`Shipping           ${this.shipping}`, 185, length+19, 'right');
+                        doc.text(`Total         ${this.total}`, 185, length+26, 'right');
+                        doc.save('allKicks-receipt.pdf')
                     }
-
-                    var doc = new jsPDF()
-                    var img = '/src/assets/allKickspdf.png'
-                    doc.addImage(img, 'png', 12, 10, 65, 18)
-                    doc.setFontSize(12)
-                    doc.setFont(undefined, 'bold');
-                    doc.text(`Customer:`,15,40)
-                    doc.setFont(undefined, 'normal');
-                    doc.text(`${this.Contact.firstName} ${this.Contact.lastName}`,40,40)
-
-                    doc.setFont(undefined, 'bold');
-                    doc.text(`Address:`,15,47)
-                    doc.setFont(undefined, 'normal');
-                    doc.text(`${this.Contact.company} ${this.Contact.address} `,40,47)
-                    doc.text(`${this.Contact.city} ${this.Contact.country} ${this.Contact.postal}`,40,54)
-
-                    doc.setFont(undefined, 'bold');
-                    doc.text(`Phone:`,15,61)
-                    doc.setFont(undefined, 'normal');
-                    doc.text(`${this.Contact.phone}`,40,61)
-                    doc.line(15, 67, 190, 67, 'F')
-
-                    autoTable(doc, {
-                        head: [['Brand', 'Description', 'Size(UK)', 'Price', 'Qty']],
-                        margin: {top:75},
-                        body: receipt,
-                        theme: 'plain'               
-                    })
-                    doc.line(15, length, 190, length, 'F')
-                    doc.setFont(undefined, 'bold');
-                    doc.text(`Subtotal        ${this.subtotal}`, 185, length+12, 'right');
-                    doc.text(`Shipping           ${this.shipping}`, 185, length+19, 'right');
-                    doc.text(`Total         ${this.total}`, 185, length+26, 'right');
-                    doc.save('allKicks-receipt.pdf')
-                }else{
-                    alert("please add your information")
-                }
+                    else if(this.subtotal!=0){
+                        alert("please add your information")
+                    }
+                    else if(this.subtotal==0){
+                        alert("please select quality")
+                    }
+                },500)
+                
             }
         }
     }
@@ -388,66 +452,64 @@ let localhostupdateorder = "http://localhost:5001/updateorders/"
 
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Playfair+Display+SC&family=Poppins:wght@200;700&display=swap");
+    /* font responsive for matching with screen */
     @media screen and (min-width: 801px) {
-    .caption {
-        text-align: left;
-        margin: 0;
-        padding: 0;
-        font-size: 1.5rem;
-        font-family: "Poppins", sans-serif;
-        color: #fff;
+        .caption {
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            font-size: 1.5rem;
+            font-family: "Poppins", sans-serif;
+            color: #fff;
+        }
+        .header-sign {
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            font-size: 80px;
+            font-family: "Poppins", sans-serif;
+            color: rgb(0, 0, 0);
+        }
+        .h2 {
+            font-size: 3rem;
+            font-family: "Poppins", sans-serif;
+            font-weight: bold;
+            color: #fff;
+        }
+        .p {
+            font-size: 1.2rem;
+            font-family: "Poppins", sans-serif;
+            font-weight: normal;
+        }
     }
-    .header-sign {
-        text-align: left;
-        margin: 0;
-        padding: 0;
-        font-size: 80px;
-        font-family: "Poppins", sans-serif;
-        color: rgb(0, 0, 0);
-    }
-    .h2 {
-        font-size: 3rem;
-        font-family: "Poppins", sans-serif;
-        font-weight: bold;
-        color: #fff;
-    }
-    .p {
-        font-size: 1.2rem;
-        font-family: "Poppins", sans-serif;
-        font-weight: normal;
-    }
-    }
+    /* font responsive for matching with screen */
     @media screen and (max-width: 800px) {
-    .caption {
-        text-align: left;
-        margin: 0;
-        padding: 0;
-        font-size: 1rem;
-        font-family: "Poppins", sans-serif;
-        color: #fff;
-    }
-    .header-sign {
-        text-align: left;
-        margin: 0;
-        padding: 0;
-        font-size: 40px;
-        font-family: "Poppins", sans-serif;
-        color: rgb(0, 0, 0);
-    }
-    .h2 {
-        font-size: 1.75rem;
-        font-family: "Poppins", sans-serif;
-        font-weight: bold;
-        color: #fff;
-    }
-    .p {
-        font-size: 0.75rem;
-        font-family: "Poppins", sans-serif;
-        font-weight: normal;
-    }
-    }
-    .changebutton{
-        z-index: 1;
-        text-align: center;
+        .caption {
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            font-size: 1rem;
+            font-family: "Poppins", sans-serif;
+            color: #fff;
+        }
+        .header-sign {
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            font-size: 40px;
+            font-family: "Poppins", sans-serif;
+            color: rgb(0, 0, 0);
+        }
+        .h2 {
+            font-size: 1.75rem;
+            font-family: "Poppins", sans-serif;
+            font-weight: bold;
+            color: #fff;
+        }
+        .p {
+            font-size: 0.75rem;
+            font-family: "Poppins", sans-serif;
+            font-weight: normal;
+        }
     }
 </style>

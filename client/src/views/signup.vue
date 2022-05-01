@@ -74,8 +74,6 @@ export default {
                 email: '',
                 password: ''
             }
-            // ,
-            // currentUser=False
         }
     },
     methods: {
@@ -103,7 +101,6 @@ export default {
             this.formData.password
           )
           .then(user => {
-            // console.log(this.formData.email)
             axios.post(localhostcontacts, {email: this.formData.email})
             .then((response)=>{
 
@@ -115,7 +112,7 @@ export default {
             this.$router.replace('/cart')
           })
           .catch(e => {
-          alert('oops' + e.message)
+            alert('oops' + e.message)
           })
       }
     },
@@ -124,6 +121,7 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display+SC&family=Poppins:wght@200;700&display=swap");
+/* font responsive for matching with screen */
 @media screen and (min-width: 601px) {
   .caption {
     text-align: left;
@@ -154,6 +152,7 @@ export default {
     color: #fff;
   }
 }
+/* font responsive for matching with screen */
 @media screen and (max-width: 600px) {
   .caption {
     text-align: left;

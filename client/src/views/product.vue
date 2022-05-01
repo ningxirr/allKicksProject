@@ -37,6 +37,7 @@
     </div>
   </nav>
 
+    <!-- print product information -->
      <div class="container pt-5" style="margin: 0cm 2cm 0cm 2cm">
         <div class="row">
             <div class="col-3" style="padding: 2px">
@@ -64,17 +65,10 @@
                             </ul>
                         </div>
                     </div>
-                    
-                    <!-- <sui-dropdown clearable selection placeholder="Select size" v-model="size" :options="['6 UK', '6.5 UK', '7 UK', '7.5 UK', '8 UK', '8.5 UK']" /> -->
                     <br><br>
                 </div>
-                <!-- <p> Contact {{this.Contact}} </p>
-                <p> Product {{this.Product}} </p>
-                <p> orderContact {{this.orderContactProduct}} </p> -->
                 <br>
-                
-                    <button type="button" class="btn btn-dark" @click="AddToCart" > Add to cart </button>
-
+                <button type="button" class="btn btn-dark" @click="AddToCart" > Add to cart </button>
             </div>
 
             <div class="col-7" style="margin: 0cm 1cm 0cm 1.75cm">
@@ -104,6 +98,8 @@
         </div>
         </div>
     <br><hr>
+
+    <!-- print history of product for customer -->
     <div v-if="username">
         <h4><b>Most Recent</b></h4>
         <br>
@@ -190,7 +186,7 @@ export default {
         }
     },
     mounted() {
-        //get product info.
+        //get product information
         axios.get(localhostproduct + this.$route.params.productId)
             .then((response) => {
                 this.Product = response.data
@@ -202,7 +198,7 @@ export default {
                 console.log(error)
             })
         
-        //get customer id
+        //check user login
         var auth = getAuth();
         var user = auth.currentUser;
         if (user !== null) {
@@ -230,7 +226,6 @@ export default {
                 axios.post(localhostcontact+this.cId, productId)
                 .then((response)=>{
                     console.log("add to history")
-                    // alert("history")
                 })
                 .catch((error)=>{
                     console.log(error)
@@ -257,8 +252,8 @@ export default {
                 })
             }
         },
+        // customer orders this product
         AddToCart(){
-            // alert(this.Product.size)
             if(this.username!=null){
                 var orderinfo = {
                     productId: this.Product._id,
@@ -270,6 +265,7 @@ export default {
                     qty: this.Product.p_qty,
                     size: this.Product.size
                 }
+                // alert(orderinfo.size)
                 if(orderinfo.size>0){
                     axios.post(localhostorders+this.cId, orderinfo)
                     .then((response)=>{

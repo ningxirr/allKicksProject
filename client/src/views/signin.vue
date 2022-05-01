@@ -101,16 +101,6 @@ export default {
             .catch(e => {
             alert(e.message)
             })
-      },
-      signInGoogle () {
-        const provider = new GoogleAuthProvider();
-        const auth = getAuth()
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                this.$router.replace('/cart')
-            }).catch((error) => {
-                alert(error.message)
-            });
       }
   },
 }
@@ -118,6 +108,7 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display+SC&family=Poppins:wght@200;700&display=swap");
+/* font responsive for matching with screen */
 @media screen and (min-width: 601px) {
   .caption {
     text-align: left;
@@ -148,6 +139,7 @@ export default {
     color: #fff;
   }
 }
+/* font responsive for matching with screen */
 @media screen and (max-width: 600px) {
   .caption {
     text-align: left;

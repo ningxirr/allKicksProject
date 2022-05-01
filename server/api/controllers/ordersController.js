@@ -16,43 +16,34 @@ exports.customerOrder = function(req, res){
     console.log("\ncustomerOrder")
     var newCustomerOrder = {}
     newCustomerOrder = req.body
-
     const filter = {customerId: req.params.custId}
-
     Order.findOne(filter, function(err, order){
         if(err) throw err
         var oldCustData = order
-
         if(oldCustData == null){
-            console.log("null order")
             var newCustOrder = new Order({
                 customerId: req.params.custId,
                 order: [newCustomerOrder]
             })
             newCustOrder.save(function(err, new_cos_order){
-                console.log("new cust create")
                 if(err) throw err
                 res.json(new_cos_order)
             })
         }
-
         else {
-            var oldCustProduct = oldCustData.order.filter(order => order.productId === newCustomerOrder.productId)
+            var oldCustProduct = oldCustData.order.filter(order => order.productId === newCustomerOrder.productId && order.size === newCustomerOrder.size)
             console.log(newCustomerOrder.productId)
             console.log(oldCustProduct)
             if (oldCustProduct.length == 0){
-                console.log("new")
                 oldCustData.order.push(newCustomerOrder)
             }
             else {
                 oldCustProduct[0].qty = parseInt(oldCustProduct[0].qty)+parseInt(newCustomerOrder.qty)
-                console.log(`same order ${oldCustProduct[0]}`)
                 oldCustData.order.qty = oldCustProduct[0].qty
             }
             
             setTimeout(()=> {
                 Order.findOneAndUpdate(filter, oldCustData, {new: true}, function(err, oldCustData){
-                    console.log("update cust order")
                     if(err) throw err
                     res.json(oldCustData)
                 })
@@ -62,7 +53,7 @@ exports.customerOrder = function(req, res){
 }
 
 exports.updateOrder = function(req, res){
-    console.log("\ncustomerUpdateQty")
+    console.log("customerUpdateQty")
     var newCustomerOrder = {}
     newCustomerOrder = req.body
 
@@ -74,8 +65,10 @@ exports.updateOrder = function(req, res){
         var oldCustData = order
 
         var oldCustProduct = oldCustData.order.filter(order => order.productId == newCustomerOrder.productId && order.size === newCustomerOrder.size)
-        oldCustData.order = oldCustData.order.filter(order => order.productId !== newCustomerOrder.productId)
-
+        oldCustData.order = oldCustData.order.filter(order => order.productId !== newCustomerOrder.productId && order.size !== newCustomerOrder.size)
+        if(newCustomerOrder.qty==null){
+            newCustomerOrder.qty=0
+        }
         if (oldCustProduct.length !== 0 && newCustomerOrder.qty!==0){
             oldCustProduct[0].qty = newCustomerOrder.qty
             oldCustData.order.push(oldCustProduct[0])
@@ -86,9 +79,7 @@ exports.updateOrder = function(req, res){
             
         setTimeout(()=> {
             Order.findOneAndUpdate(filter, oldCustData, {new: true}, function(err, oldCustData){
-                console.log("update cust order")
                 if(err) throw err
-                console.log("change qty to "+ oldCustProduct[0].qty)
                 res.json(oldCustData)
             })
         },0)

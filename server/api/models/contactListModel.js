@@ -66,7 +66,7 @@ var ContactSchema = new Schema({
         },
         createdDate:{
             type: Date,
-            default :Date.now //default ไม่ต้อง required
+            default :Date.now
         }
     }]
 })

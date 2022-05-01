@@ -6,7 +6,6 @@ port = process.env.PORT || 5001
 mongoose = require('mongoose')
 Product = require('./api/models/productsModel')
 Contact = require('./api/models/contactListModel')
-Admin = require('./api/models/adminModel')
 Order = require('./api/models/ordersModel')
 
 bodyParser = require('body-parser')
@@ -25,12 +24,10 @@ app.use(bodyParser.json())
 
 var routes = require('./api/routes/productsRoutes')
 var routescontact = require('./api/routes/contactListRoutes')
-var routesadmin = require('./api/routes/adminRoutes')
 var routesorder = require('./api/routes/ordersRoutes')
 
 routes(app)
 routescontact(app)
-routesadmin(app)
 routesorder(app)
 
 app.listen(port)

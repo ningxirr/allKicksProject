@@ -44,7 +44,7 @@
                 <div class="col-sm">
                     <img src="../assets/aboutus/ya.png" width="200" alt="">
                     <br><br>
-                    <p class="name"><b>@yaa.jkj</b></p>
+                    <p class="name"><b>@yaaa.jkj</b></p>
                     <p>Nasreeya Tippayanont</p>
                     <img src="../assets/aboutus/yasign.png" width="40" alt="">
                 </div>
@@ -66,7 +66,7 @@
                     <img src="../assets/aboutus/new.png" width="200" alt="">
                     <br><br>
                     <p class="name"><b>@new_norawich</b></p>
-                    <p>Norawich Supagitchanchai</p>
+                    <p>Norawich Sapagitchanchai</p>
                     <img src="../assets/aboutus/newsign.png" width="70" alt="">
                 </div>
             </div>
@@ -93,6 +93,7 @@ import {signOut } from 'firebase/auth'
             }
         },
         mounted() {
+            // check user login (show username on navbar)
             var auth = getAuth();
             var user = auth.currentUser;
             if (user !== null) {

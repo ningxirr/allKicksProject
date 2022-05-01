@@ -128,7 +128,6 @@
 <script>
 import { getAuth } from "firebase/auth";
 import {signOut } from 'firebase/auth'
-let localhost = "http://localhost:5001/products/";
 export default {
   name: "Products",
   props: {},
@@ -139,6 +138,7 @@ export default {
     };
   },
   mounted() {
+    // check user login (show username on navbar)
     var auth = getAuth();
     var user = auth.currentUser;
     if (user !== null) {
@@ -165,6 +165,7 @@ export default {
       },
   },
 };
+// scroll down to reveal elements
 function reveal() {
       var reveals = document.querySelectorAll(".reveal");
       for (var i = 0; i < reveals.length; i++) {
@@ -214,6 +215,7 @@ window.addEventListener("scroll", reveal);
     color: #fff;
   }
 }
+/* font responsive for matching with screen */
 @media screen and (max-width: 600px) {
   .caption {
     text-align: left;
@@ -277,6 +279,7 @@ window.addEventListener("scroll", reveal);
   background-color: rgb(255, 255, 255);
   width: 100%;
 }
+/* style for reveal function */
 .reveal{
   position: relative;
   transform: translateY(150px);

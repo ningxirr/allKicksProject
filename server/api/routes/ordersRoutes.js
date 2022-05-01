@@ -8,5 +8,4 @@ module.exports = function(app){
 
     app.route('/updateorders/:custId')
         .post(order.updateOrder)
-
 }
