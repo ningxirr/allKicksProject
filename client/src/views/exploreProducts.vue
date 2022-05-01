@@ -178,8 +178,8 @@ export default {
     return {
       username: "",
       search: "",
-      Products: [],
-    };
+      Products: []
+    }
   },
   mounted() {
     var auth = getAuth();
@@ -190,11 +190,11 @@ export default {
     }
     axios
       .get(localhost)
-      .then((reponse) => {
+      .then(reponse => {
         this.Products = reponse.data;
         console.log();
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   },
@@ -210,22 +210,22 @@ export default {
           .then(() => {
             this.$router.replace("/signin");
           })
-          .catch((error) => {
+          .catch(error => {
             alert(error.message);
           });
       }
-    },
+    }
   },
   computed: {
-    filterProducts: function () {
-      return this.Products.filter((product) => {
+    filterProducts: function() {
+      return this.Products.filter(product => {
         return (
           product.name.toLowerCase().match(this.search.toLowerCase()) ||
           product.description1.toLowerCase().match(this.search.toLowerCase())
         );
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

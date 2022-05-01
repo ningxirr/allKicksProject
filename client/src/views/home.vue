@@ -3,13 +3,15 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a class="navbar-brand" href="/"
-          ><img
+        <a class="navbar-brand" href="/">
+          <img
             src="src/assets/allKicks.png"
             alt="Image"
             height="35"
             width="100"
-        /></a>
+          />
+        </a>
+
         <button
           class="navbar-toggler"
           type="button"
@@ -24,31 +26,24 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">Home</a>
+              <a class="nav-link active" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/explore">Shop</a>
+              <a class="nav-link" aria-current="page" href="/explore"
+                >Shop</a
+              >
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/aboutus">About us</a>
             </li>
           </ul>
-
           <form class="d-flex">
-            <a class="nav-link" href="/cart"
-              ><i
+            <a class="nav-link" href="/cart">
+              <i
                 class="bi bi-bag-check-fill"
                 style="font-size: 1.5rem; color: rgb(255, 255, 255)"
-              ></i
-            ></a>
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-              v-model="search"
-            />
-            <!-- <a class="nav-link" href="/signin"><i class="bi bi-person-circle" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a> -->
+              ></i>
+            </a>
             <a
               class="nav-link dropdown-toggle"
               id="navbarDarkDropdownMenuLink"
@@ -66,7 +61,12 @@
               style="text-align: right"
             >
               <li>Welcome {{ this.username }} !&nbsp;</li>
-              <li><a class="dropdown-item" @click="logout()">Signout</a></li>
+              <li v-if="username">
+                <a class="dropdown-item" @click="logOut()">Signout</a>
+              </li>
+              <li v-else>
+                <a class="dropdown-item" @click="logIn()">Signin</a>
+              </li>
             </ul>
           </form>
         </div>
@@ -128,7 +128,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { getAuth } from "firebase/auth";
 import {signOut } from 'firebase/auth'
 let localhost = "http://localhost:5001/products/";
@@ -137,10 +136,8 @@ export default {
   props: {},
   data() {
     return {
+      emailregist: '',
       username: '',
-      search: "",
-      Products: [],
-      // _id: ''
     };
   },
   mounted() {
@@ -149,16 +146,16 @@ export default {
     if (user !== null) {
       this.emailregist = user.email
       this.username = user.email.split('@')[0];
-      axios.get(localhost)
+      /* axios.get(localhost)
           .then((reponse) => {
             this.Products = reponse.data
             console.log()
           })
           .catch((error) => {
             console.log(error)
-          })
+          }) */
     }
-    axios
+    /* axios
       .get(localhost)
       .then((reponse) => {
         console.log(reponse.data);
@@ -166,7 +163,7 @@ export default {
       })
       .catch((error) => {
         console.log(error);
-      });
+      }); */
   },
   methods: {
     logIn(){
@@ -186,7 +183,7 @@ export default {
           }
       },
   },
-  computed: {
+ /*  computed: {
     filterProducts: function () {
       return this.Products.filter((product) => {
         return (
@@ -195,7 +192,7 @@ export default {
         );
       });
     },
-  },
+  }, */
 };
 function reveal() {
       var reveals = document.querySelectorAll(".reveal");
