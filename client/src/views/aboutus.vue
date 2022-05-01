@@ -38,43 +38,43 @@
                 </div>
             </div>
         </nav>
-        <div class="container col-10 pt-5">
-            <h1><b>About us</b></h1>
-            <div class="row pt-5">
-                <div class="col-3">
-                    <img src="../assets/aboutus/ya.png" width="150" alt="">
-                    <p><b>@yaa.jkj</b></p>
+        <div class="container">
+            <h1 style="padding: 50px 50px 0px;"><b>About Us</b></h1>
+            <div class="row" style="padding-top:40px; margin:5%; text-align: center;">
+                <div class="col-sm">
+                    <img src="../assets/aboutus/ya.png" width="200" alt="">
+                    <br><br>
+                    <p class="name"><b>@yaa.jkj</b></p>
                     <p>Nasreeya Tippayanont</p>
-                    <br><br>
-                    <img src="../assets/aboutus/yasign.png" width="30" alt="">
+                    <img src="../assets/aboutus/yasign.png" width="40" alt="">
                 </div>
-                <div class="col-3">
-                    <img src="../assets/aboutus/ning.png" width="150" alt="">
-                    <p><b>@ningxirr_</b></p>
+                <div class="col-sm">
+                    <img src="../assets/aboutus/ning.png" width="200" alt="">
+                    <br><br>
+                    <p class="name"><b>@ningxirr_</b></p>
                     <p>Pojanut Aramvuttanagul</p>
-                    <br><br>
-                    <img src="../assets/aboutus/ningsign.png" width="60" alt="">
+                    <img src="../assets/aboutus/ningsign.png" width="70" alt="">
                 </div>
-                <div class="col-3">
-                    <img src="../assets/aboutus/ohm.png" width="150" alt="">
-                    <p><b>@ohmabcd</b></p>
+                <div class="col-sm">
+                    <img src="../assets/aboutus/ohm.png" width="200" alt="">
+                    <br><br>
+                    <p class="name"><b>@ohmabcd</b></p>
                     <p>Phuwit Chantafong</p>
-                    <br><br>
-                    <img src="../assets/aboutus/ohmsign.png" width="50" alt="">
+                    <img src="../assets/aboutus/ohmsign.png" width="70" alt="">
                 </div>
-                <div class="col-3">
-                    <img src="../assets/aboutus/new.png" width="150" alt="">
-                    <p><b>@new_norawich</b></p>
-                    <p>Norawich Supagitchanchai</p>
+                <div class="col-sm">
+                    <img src="../assets/aboutus/new.png" width="200" alt="">
                     <br><br>
-                    <img src="../assets/aboutus/newsign.png" width="50" alt="">
+                    <p class="name"><b>@new_norawich</b></p>
+                    <p>Norawich Supagitchanchai</p>
+                    <img src="../assets/aboutus/newsign.png" width="70" alt="">
                 </div>
             </div>
             <br><br><br>
-            <h3><b>Web programming course project</b></h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae vero, quos debitis voluptate
-                dolorum libero assumenda tempora sint explicabo recusandae possimus perspiciatis vitae temporibus sit,
-                accusamus nemo magni fugit aliquid.</p>
+            <h3 style="padding:0cm 1cm 0cm 1cm"><b>Web programming course project</b></h3>
+            <p style="padding:0cm 1cm 0cm 1cm">Web programming refers to the writing, markup and coding involved in Web development, which includes Web content, Web client and server scripting and network security. The most common languages used for Web programming are XML, HTML, JavaScript, Perl 5 and PHP. Web programming is different from just programming, which requires interdisciplinary knowledge on the application area, client and server scripting, and database technology.
+
+</p>
             <br><br>
         </div>
     </div>
@@ -84,6 +84,7 @@
 
 <script>
 import { getAuth } from "firebase/auth";
+import {signOut } from 'firebase/auth'
     export default {
         data() {
             return {
@@ -121,5 +122,17 @@ import { getAuth } from "firebase/auth";
 </script>
 
 <style>
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap');
+.name{
+    font-size: 20px;
+}
+h1{
+    font-family: "Poppins", sans-serif;
+}
+h3{
+    font-family: "Poppins", sans-serif;
+}
+p{
+    font-family: "Poppins", sans-serif;
+}
 </style>

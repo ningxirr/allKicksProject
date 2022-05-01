@@ -45,10 +45,6 @@ const routes = [
         path: '/cart',
         name: 'Cart',
         component: Cart
-        /* ,
-        meta: {
-          requiresAuth: true
-        } */
       },
       {
           path: '/signin',
@@ -60,10 +56,6 @@ const routes = [
         name: 'Signup',
         component: Signup
       }
-      /*,
-         meta: {
-            requiresAuth: true
-        } */
 ]
 
 const router = createRouter({

@@ -3,13 +3,15 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a class="navbar-brand" href="/"
-          ><img
+        <a class="navbar-brand" href="/">
+          <img
             src="src/assets/allKicks.png"
             alt="Image"
             height="35"
             width="100"
-        /></a>
+          />
+        </a>
+
         <button
           class="navbar-toggler"
           type="button"
@@ -24,26 +26,47 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">Home</a>
+              <a class="nav-link active" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/explore">Shop</a>
+              <a class="nav-link" aria-current="page" href="/explore"
+                >Shop</a
+              >
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/aboutus">About us</a>
             </li>
           </ul>
-
           <form class="d-flex">
-            <a class="nav-link" href="/cart"><i class="bi bi-bag-check-fill" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i></a>
-            <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              <i class="bi bi-person-circle" style="font-size: 1.5rem; color: rgb(255, 255, 255);"></i>
+            <a class="nav-link" href="/cart">
+              <i
+                class="bi bi-bag-check-fill"
+                style="font-size: 1.5rem; color: rgb(255, 255, 255)"
+              ></i>
             </a>
-            <ul class="dropdown-menu dropdown-menu-lg-end" style="text-align:right">
-              <li>Welcome {{this.username}} !&nbsp;</li>
-              <li v-if="username"><a class="dropdown-item" @click="logOut()">Signout</a></li>
-              <li v-else><a class="dropdown-item" @click="logIn()">Signin</a></li>
+            <a
+              class="nav-link dropdown-toggle"
+              id="navbarDarkDropdownMenuLink"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i
+                class="bi bi-person-circle"
+                style="font-size: 1.5rem; color: rgb(255, 255, 255)"
+              ></i>
+            </a>
+            <ul
+              class="dropdown-menu dropdown-menu-lg-end"
+              style="text-align: right"
+            >
+              <li>Welcome {{ this.username }} !&nbsp;</li>
+              <li v-if="username">
+                <a class="dropdown-item" @click="logOut()">Signout</a>
+              </li>
+              <li v-else>
+                <a class="dropdown-item" @click="logIn()">Signin</a>
+              </li>
             </ul>
           </form>
         </div>
@@ -91,18 +114,20 @@
         </div>
       </div>
     </div>
+
     <div class="reveal bg-color" style="padding:0;text-align: center;">
       <img src="../assets/hp-3.png" class="img-fluid " alt="Image" />
     </div>
-    <div class="container bg-color reveal" style="margin:2cm;padding:2cm;text-align: center;">
-      <h1 class="logo">It’s Not Just An Outfit, It’s An Attitude: Style Tips For The Travis Scott Sneakers</h1>
-      <h1 class="caption">Travis Scott is a man that does not let up. He’s constantly creating—music, film, endorsement deals, clothing, and of course, an unending line of luxury kicks. His footwear output ranges from multi-layered challenges to clean minimalist looks, meaning you have a fantastic range of options when it comes to planning your outfit from the shoes up.</h1>
+    <br>
+    <div class="container bg-color reveal" style="padding:1cm 3cm 1cm 3cm;text-align: center;">
+      <h1 class="h2">It’s Not Just An Outfit, It’s An Attitude: Style Tips For The Travis Scott Sneakers</h1>
+      <h1 class="h5">Travis Scott is a man that does not let up. He’s constantly creating—music, film, endorsement deals, clothing, and of course, an unending line of luxury kicks. His footwear output ranges from multi-layered challenges to clean minimalist looks, meaning you have a fantastic range of options when it comes to planning your outfit from the shoes up.</h1>
     </div>
+    <br>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import { getAuth } from "firebase/auth";
 import {signOut } from 'firebase/auth'
 let localhost = "http://localhost:5001/products/";
@@ -111,10 +136,8 @@ export default {
   props: {},
   data() {
     return {
+      emailregist: '',
       username: '',
-      search: "",
-      Products: [],
-      // _id: ''
     };
   },
   mounted() {
@@ -123,16 +146,16 @@ export default {
     if (user !== null) {
       this.emailregist = user.email
       this.username = user.email.split('@')[0];
-      axios.get(localhost)
+      /* axios.get(localhost)
           .then((reponse) => {
             this.Products = reponse.data
             console.log()
           })
           .catch((error) => {
             console.log(error)
-          })
+          }) */
     }
-    axios
+    /* axios
       .get(localhost)
       .then((reponse) => {
         console.log(reponse.data);
@@ -140,7 +163,7 @@ export default {
       })
       .catch((error) => {
         console.log(error);
-      });
+      }); */
   },
   methods: {
     logIn(){
@@ -160,7 +183,7 @@ export default {
           }
       },
   },
-  computed: {
+ /*  computed: {
     filterProducts: function () {
       return this.Products.filter((product) => {
         return (
@@ -169,7 +192,7 @@ export default {
         );
       });
     },
-  },
+  }, */
 };
 function reveal() {
       var reveals = document.querySelectorAll(".reveal");
@@ -216,92 +239,14 @@ window.addEventListener("scroll", reveal);
     font-weight: bold;
     color: #fff;
   }
-}
-@media screen and (max-width: 600px) {
-  .caption {
-    text-align: left;
-    margin: 0;
-    padding: 0;
+  .h5 {
     font-size: 1rem;
     font-family: "Poppins", sans-serif;
+    font-weight: normal;
     color: #fff;
   }
-  .logo {
-    text-align: left;
-    margin: 0;
-    padding: 0;
-    font-size: 2rem;
-    font-family: "Poppins", sans-serif;
-    font-weight: bold;
-    color: #fff;
-  }
-}
-.h1 {
-  margin: 0;
-  padding: 0;
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
-}
-.p2 {
-  margin: 0;
-  padding: 0;
-  font-family: "Poppins", sans-serif;
-  font-weight: normal;
-}
-.centered {
-  position: absolute;
-  color: #fff;
-  font-size: 4em;
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
-  transform: translate(-50%, -50%);
-}
-.bg-img {
-  /* background-image: url("../assets/bg-home.png"); */
-  position: absolute;
-  z-index: 1;
-}
-.bg-color {
-  background-color: black;
-  background-size: 100%;
-}
-.bg-white {
-  background-color: rgb(255, 255, 255);
-  width: 100%;
-}
-.reveal{
-  position: relative;
-  transform: translateY(150px);
-  opacity: 0;
-  transition: 1s all ease;
-}
-.reveal.active{
-  transform: translateY(0);
-  opacity: 1;
-}@import url("https://fonts.googleapis.com/css2?family=Playfair+Display+SC&family=Poppins:wght@200;700&display=swap");
-/* .logo {
-  text-align: left;
-  margin: 0;
-  padding: 0;
-  font-size: 3.5rem;
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
-  color: #fff;
-} */
-@media screen and (min-width: 601px) {
-  .caption {
-    text-align: left;
-    margin: 0;
-    padding: 0;
-    font-size: 1.5rem;
-    font-family: "Poppins", sans-serif;
-    color: #fff;
-  }
-  .logo {
-    text-align: left;
-    margin: 0;
-    padding: 0;
-    font-size: 3.5rem;
+  .h2 {
+    font-size: 3rem;
     font-family: "Poppins", sans-serif;
     font-weight: bold;
     color: #fff;
@@ -321,6 +266,18 @@ window.addEventListener("scroll", reveal);
     margin: 0;
     padding: 0;
     font-size: 2rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    color: #fff;
+  }
+  .h5 {
+    font-size: 0.75rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: normal;
+    color: #fff;
+  }
+  .h2 {
+    font-size: 1.75rem;
     font-family: "Poppins", sans-serif;
     font-weight: bold;
     color: #fff;

@@ -39,23 +39,24 @@
   
     <div class="container col-10 pt-5">
       <div class="row">
-        <div class="col-4">
+        <div class="col-5">
+          <br><br>
           <form class="signin" @submit.prevent="Login">
-            <h1>Sign In</h1>
+            <h1 style="font-size:80px; font-family: 'Poppins',sans-serif;">Sign In</h1>
             <br><br>
             <h5><b>Email</b></h5>
             <input type="email" v-model="formData.email" class="form-control" placeholder="email" >
             <br>
             <h5><b>Password</b></h5>
             <input type="password" v-model="formData.password" class="form-control" placeholder="password">
-            <br>
+            <br><br><br>
             <p>Need an account? <router-link :to="{ path: 'signup', name: 'Signup'} " style="text-decoration : none; color: navy">signup here</router-link></p>
-            <button class="btn btn-success btn-block full-width" @click="signIn">Signin</button>
+            <button class="btn btn-success btn-block full-width" @click="signIn">Sign In</button>
             
           </form>
         </div>
         <div class="col">
-          <img src="../assets/siginpic.png" class="img-fluid" alt="Image" width=500>
+          <img src="../assets/siginpic.png" class="img-fluid" alt="Image" width=800 style="padding-left:100px">
         </div>
       </div>
       <br><br>
@@ -117,4 +118,5 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap');
 </style>
