@@ -65,7 +65,7 @@
 <script>
 import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth'
 import axios from 'axios'
-let localhostcontacts = "http://localhost:5001/contacts/"
+let localhostcontacts = "https://allkicks-backend.herokuapp.com/contacts/"
 export default {
     name: 'SignUp',
     data () {

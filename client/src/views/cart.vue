@@ -189,9 +189,9 @@ import {signOut } from 'firebase/auth'
 import axios from 'axios'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
-let localhostcontact = "http://localhost:5001/contacts/"
-let localhostorder = "http://localhost:5001/orders/"
-let localhostupdateorder = "http://localhost:5001/updateorders/"
+let localhostcontact = "https://allkicks-backend.herokuapp.com/contacts/"
+let localhostorder = "https://allkicks-backend.herokuapp.com/orders/"
+let localhostupdateorder = "https://allkicks-backend.herokuapp.com/updateorders/"
     export default {
         name: 'Cart',
         data() {
@@ -327,6 +327,9 @@ let localhostupdateorder = "http://localhost:5001/updateorders/"
                     productId: id,
                     size: shoesize,
                     qty: q
+                }
+                if(!Orders.qty){
+                    Orders.qty=0
                 }
                 axios.post(localhostupdateorder+this.Contact._id, Orders)
                 .then((response)=>{

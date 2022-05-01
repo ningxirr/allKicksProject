@@ -53,7 +53,7 @@ exports.customerOrder = function(req, res){
 }
 
 exports.updateOrder = function(req, res){
-    console.log("customerUpdateQty")
+    console.log("\ncustomerUpdateQty")
     var newCustomerOrder = {}
     newCustomerOrder = req.body
 
@@ -63,25 +63,25 @@ exports.updateOrder = function(req, res){
     Order.findOne(filter, function(err, order){
         if(err) throw err
         var oldCustData = order
-
+        console.log(newCustomerOrder.size)
         var oldCustProduct = oldCustData.order.filter(order => order.productId == newCustomerOrder.productId && order.size === newCustomerOrder.size)
-        oldCustData.order = oldCustData.order.filter(order => order.productId !== newCustomerOrder.productId && order.size !== newCustomerOrder.size)
-        if(newCustomerOrder.qty==null){
-            newCustomerOrder.qty=0
-        }
+        oldCustData.order = oldCustData.order.filter(order => !(order.productId == newCustomerOrder.productId && order.size === newCustomerOrder.size))
         if (oldCustProduct.length !== 0 && newCustomerOrder.qty!==0){
+            console.log("Update Complete")
+            console.log(newCustomerOrder.qty)
             oldCustProduct[0].qty = newCustomerOrder.qty
             oldCustData.order.push(oldCustProduct[0])
         }
         else {
-            console.log("Update Fail")
-        }
-            
+            console.log("Delete")
+        }  
         setTimeout(()=> {
             Order.findOneAndUpdate(filter, oldCustData, {new: true}, function(err, oldCustData){
+                console.log("update cust order")
                 if(err) throw err
+                console.log("change qty to "+ oldCustProduct[0].qty)
                 res.json(oldCustData)
             })
         },0)
-    })
+    }) 
 }
