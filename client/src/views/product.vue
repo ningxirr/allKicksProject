@@ -161,10 +161,10 @@
 import axios from 'axios'
 import { getAuth } from "firebase/auth";
 import {signOut } from 'firebase/auth'
-let localhostproduct = "https://allkicks-backend.herokuapp.com/products/"
+let localhostproduct = "http://localhost:5001/products/"
 // let localhostproduct = "https://allkicks-backend.herokuapp.com/products"
-let localhostcontact = "https://allkicks-backend.herokuapp.com/contacts/"
-let localhostorders = "https://allkicks-backend.herokuapp.com/orders/"
+let localhostcontact = "http://localhost:5001/contacts/"
+let localhostorders = "http://localhost:5001/orders/"
 export default {
     name: 'Products',
     data() {

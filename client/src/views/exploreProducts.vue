@@ -171,7 +171,7 @@
 import axios from "axios";
 import { getAuth } from "firebase/auth";
 import { signOut } from "firebase/auth";
-let localhost = "https://allkicks-backend.herokuapp.com/products/";
+let localhost = "http://localhost:5001/products/";
 export default {
   name: "Products",
   props: {},
